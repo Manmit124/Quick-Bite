@@ -27,7 +27,7 @@ const perks = [
 export default function Home() {
   return (
     <>
-     
+      <Header />
       <Hero />
     
       <HomeMenu/>
