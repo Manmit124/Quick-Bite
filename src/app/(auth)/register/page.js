@@ -1,25 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
-import {signIn, useSession} from "next-auth/react";
-import { Label } from "../component/ui/label";
-import { Input } from "../component/ui/input";
-import { Button, buttonVariants } from "../component/ui/button";
+
+import { Label } from "../../component/ui/label";
+import { Input } from "../../component/ui/input";
+import { Button, buttonVariants } from "../../component/ui/button";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { cn } from "../../utils/app";
 
 const page = () => {
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   const [creatingUser, setcreatingUser] = useState(false);
   const [error, seterror] = useState(false);
-// const session=useSession()
-// const redirect=useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setcreatingUser(true);
-    await signIn('credentials', {email, password,callbackUrl:'/'});
-   
+
+    const response = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: { "Content-Type": "application/json" },
+    });
 
     if (!response.ok) {
       seterror(true);
@@ -29,24 +33,37 @@ const page = () => {
 
     setcreatingUser(false);
   };
-  
-// if(session.status==='authenticated'){
-//    return  redirect('/')
-// }
+
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center  ">
-    
+    <>
+<div>
+<div>
+        <div className="right-3 ">
+          <Link href={"/"} className=" mt-2 relative ">
+            <Button
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "absolute left-4 top-4 md:left-8 md:top-8 text-slate-500"
+              )}
+            >
+              Back
+            </Button>
+          </Link>
+        </div>
+        </div>
+    <div className="container flex h-screen w-screen flex-col items-center justify-center ">
+     
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           hellow
           <h1 className="text-2xl font-semibold tracking-tight">
-            Welcome Back Buddy
+            Welcome Man
           </h1>
           {error ? (
             <div className="text-red-900">Error hai bhai {error.message}</div>
           ) : (
             <p className="text-sm text-muted-foreground">
-              Enter your email to login
+              Enter your email to register
             </p>
           )}
         </div>
@@ -79,7 +96,7 @@ const page = () => {
                 />
               </div>
               <Button disabled={creatingUser} type="submit" className="mt-2">
-                login
+                Register
               </Button>
             </div>
           </form>
@@ -97,14 +114,16 @@ const page = () => {
         </div>
         <p className="px-8 text-center text-sm text-muted-foreground">
           <Link
-            href="/register"
+            href="/login"
             className="hover:text-brand underline underline-offset-4"
           >
-           Dont't  have an account? Register
+             have an account? Login
           </Link>
         </p>
       </div>
     </div>
+</div>
+    </>
   );
 };
 
