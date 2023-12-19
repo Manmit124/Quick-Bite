@@ -5,17 +5,24 @@ import { Label } from "@/app/component/ui/label";
 import { toast } from "@/app/component/ui/use-toast";
 import userprofile from "@/app/hook/userprofile";
 import { cn } from "@/app/utils/app";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const page = () => {
   const { loading, data } = userprofile();
   const [menuItems, setmenuItems] = useState([]);
-  useEffect(() => {
-    fetch("/api/menu-items").then((menuitems) => {
-      setmenuItems(menuitems);
+
+  function fetchMenuItems() {
+    fetch("/api/menu-items").then((res) => {
+      res.json().then((menuitems) => {
+        setmenuItems(menuitems);
+      });
     });
-  });
+  }
+  useEffect(() => {
+    fetchMenuItems();
+  }, []);
 
   if (loading) {
     return "Loading is ifo";
@@ -39,16 +46,22 @@ const page = () => {
               Create new menu items
             </Link>
           </div>
-        </div>
-        <div>
-          {menuItems?.length > 0 &&
-            menuItems.map(item => (
+          <div className="mt-8 grid gap-4 grid-cols-4  flex-col ">
+            {menuItems?.length > 0 &&
+              menuItems.map((item) => (
+      
+                  <div key={item.id} className="max-w-xl mx-auto pl-10 pr-10  bg-slate-500 rounded-lg">
+                    <Link href={'/menu-items/edit/'+item._id} className="w-full  text-white py-2 px-4 rounded focus:outline-none  transition duration-300 ">
+                    <div className="relative w-24 h-24">
+                    <Image src={item.image} alt="imag of menu-items" height={100} width={100}/>
 
-            <div>{item.name}</div>)
-
-            )
-          }
-            
+                    </div>
+                      {item.name}
+                    </Link>
+                  </div>
+              
+              ))}
+          </div>
         </div>
       </div>
     </div>

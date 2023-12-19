@@ -8,9 +8,13 @@ export async function POST(req) {
   const menuItemDoc = await MenuItem.create(data);
   return Response.json(menuItemDoc);
 }
-export async function GET(){
+export async function PUT(req) {
   connectToDB();
-  return Response.json(
-    await MenuItem.find()
-  )
+  const { _id, ...data } = await req.json();
+  await MenuItem.findByIdAndUpdate(_id,data)
+  return Response.json(true)
+}
+export async function GET() {
+  connectToDB();
+  return Response.json(await MenuItem.find());
 }

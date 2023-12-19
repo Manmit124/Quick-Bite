@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 
 const ImageUploader = ({ image, setImageUrl, setimage }) => {
   const [imagePercentage, setImagePercentage] = useState(0);
-
+  const [formData, setformData] = useState({});
   const { toast } = useToast();
   const session = useSession();
   const userData = session.data?.user;
@@ -48,9 +48,13 @@ const ImageUploader = ({ image, setImageUrl, setimage }) => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((downloadURL) => {
-            // setformData((prevFormData) => ({ ...prevFormData, profilePicture: downloadURL }));
+            setformData((prevFormData) => ({
+              ...prevFormData,
+              profilePicture: downloadURL,
+            }));
             setImageUrl(downloadURL);
-            setimage(URL.createObjectURL(downloadURL))
+            // setimage(URL.createObjectURL(new Blob([downloadURL], { type: 'image/jpeg' })))
+            setimage(image);
           })
           .catch((error) => {
             console.error(error);
@@ -71,15 +75,18 @@ const ImageUploader = ({ image, setImageUrl, setimage }) => {
   return (
     <div className="flex-col p-2 mb-0 rounded-lg">
       <Image
-      
-        src={image ? URL.createObjectURL(image) : userImage}
+        // image ? URL.createObjectURL(image) : userImage
+        src={formData.profilePicture || userImage}
         height={100}
         width={100}
+        alt="image of special"
         className="object-cover bg-gray-500 border-gray-500 mb-2"
       />
-{!image&&(
-  <div className="mb-1 bg-gray-200 p-4 text-gray-500 rounded-lg">No image </div>
-)}
+      {!image && (
+        <div className="mb-1 bg-gray-200 p-4 text-gray-500 rounded-lg">
+          No image{" "}
+        </div>
+      )}
       <Label className="cursor-pointer" variant="outline">
         <Input
           type="file"
