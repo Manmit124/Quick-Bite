@@ -1,33 +1,13 @@
 "use client";
-import Categorycard from "@/app/component/layout/Categorycard";
-import Editcategory from "@/app/component/layout/Editcategory";
 import { Button } from "@/app/component/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/app/component/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/app/component/ui/dropdown-menu";
 import { Input } from "@/app/component/ui/input";
 import { Label } from "@/app/component/ui/label";
 import { toast } from "@/app/component/ui/use-toast";
+import { toast as hottoast } from "react-hot-toast";
 import userprofile from "@/app/hook/userprofile";
-import {
-  CircleEllipsisIcon,
-  ShieldEllipsisIcon,
-  ThermometerIcon,
-} from "lucide-react";
-import Link from "next/link";
+import { Edit, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
-import { toast as hottoast } from "react-hot-toast";
 
 const page = () => {
   const [newcategoryname, setnewcategoryname] = useState("");
@@ -61,7 +41,7 @@ const page = () => {
       });
       setnewcategoryname("");
       fetchCategories();
-      seteditCategory(null)
+      seteditCategory(null);
       if (response.ok) {
         toast({
           title: editCategory
@@ -75,6 +55,31 @@ const page = () => {
       }
     });
   };
+  async function handleDeleteClick(_id) {
+    const newPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch("/api/categories?_id=" + _id, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        resolve();
+        toast({
+          title: "Category deleted successfully",
+          variant: "outline",
+        });
+      } else {
+        reject();
+        toast({
+          title: "kuch to gadbad hai bhai",
+          variant: "destructive",
+        });
+      }
+    });
+
+    await hottoast.promise(newPromise, {
+      loading: "Deleting, just wait...",
+    });
+    fetchCategories();
+  }
 
   if (ProfileLoading) {
     return "loadin bhai loading";
@@ -104,24 +109,44 @@ const page = () => {
               onChange={(e) => setnewcategoryname(e.target.value)}
             />
           </div>
-          <div>
+          <div className="flex gap-2">
             <Button type="Submit">{editCategory ? "Update" : "Create"}</Button>
+            <Button type="button" onClick={()=>{
+              seteditCategory(null);
+              setnewcategoryname('')
+            
+            }} variant="destructive">Cancel</Button>
           </div>
         </div>
       </form>
-      <div className="py-5 mx-auto text-center flex flex-col items-center">
+      <div className="py-5 mx-auto max-w-xl flex flex-col items-center">
         {Categories?.length > 0 &&
           Categories.map((c) => (
-            <Button
-              onClick={() => {
-                seteditCategory(c);
-                setnewcategoryname(c.name);
-              }}
-              className="bg-slate-50"
+            <div
+              key={c._id}
+              className="bg-slate-100 w-full p-4 my-2 rounded-md cursor-pointer hover:bg-slate-200 transition duration-300  shadow-lg hover:scale-105 justify-between flex"
               variant="outline"
             >
-              <span>{c.name}</span>
-            </Button>
+              <span
+                className="text-gray-800 font-medium hover:text-lg
+               "
+              >
+                {c.name}
+              </span>
+              <div className="flex gap-2 ">
+                <Edit
+                  onClick={() => {
+                    seteditCategory(c);
+                    setnewcategoryname(c.name);
+                  }}
+                  className="hover:text-blue-500"
+                />
+                <Trash2
+                  onClick={() => handleDeleteClick(c._id)}
+                  className=" hover:text-red-500"
+                />
+              </div>
+            </div>
           ))}
       </div>
     </div>

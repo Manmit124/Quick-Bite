@@ -15,7 +15,7 @@ const NewMenuItems = () => {
   const [menuItem, setmenuItem] = useState(null);
 
   const { loading, data } = userprofile();
- 
+
   const [formData, setformData] = useState({});
   const [redirecttoItem, setredirecttoItem] = useState(false);
   useEffect(() => {
@@ -28,10 +28,10 @@ const NewMenuItems = () => {
     });
   }, []);
 
-  const handleFormSubmit = async (e,data) => {
+  const handleFormSubmit = async (e, data) => {
     e.preventDefault();
 
-    data={...data,_id:id,image:formData.profilePicture}
+    data = { ...data, _id: id, image: formData.profilePicture };
 
     const savingPromise = new Promise(async (resolve, reject) => {
       const response = await fetch("/api/menu-items", {
@@ -60,6 +60,18 @@ const NewMenuItems = () => {
     });
     setredirecttoItem(true);
   };
+  const handleDelete = async (id) => {
+   const Response= await fetch("/api/menu-items?_id=" + id, {
+      method: "DELETE",
+    });
+    if(Response.ok){
+      toast({
+        title:"Menu_items deleted successfully",
+        variant:"outline"
+      })
+    }
+    setredirecttoItem(true);
+  };
   if (redirecttoItem) {
     return redirect("/menu-items");
   }
@@ -82,7 +94,14 @@ const NewMenuItems = () => {
           </h1>
         </div>
         <div className="max-w-xl mx-auto ">
-          <Menuitemform  menuItem={menuItem} setImageUrl={setImageUrl} onSubmit={handleFormSubmit}/>
+          <Menuitemform
+            menuItem={menuItem}
+            setImageUrl={setImageUrl}
+            onSubmit={handleFormSubmit}
+          />
+          <Button type="button" onClick={() => handleDelete(id)}>
+            Delete this menu Item
+          </Button>
           <div className="mt-4"></div>
         </div>
       </div>

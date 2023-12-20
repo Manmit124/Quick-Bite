@@ -50,7 +50,7 @@ const page = () => {
             {menuItems?.length > 0 &&
               menuItems.map((item) => (
       
-                  <div key={item.id} className="max-w-xl mx-auto pl-10 pr-10  bg-slate-500 rounded-lg">
+                  <div key={item._id} className="max-w-xl mx-auto pl-10 pr-10  bg-slate-500 rounded-lg">
                     <Link href={'/menu-items/edit/'+item._id} className="w-full  text-white py-2 px-4 rounded focus:outline-none  transition duration-300 ">
                     <div className="relative w-24 h-24">
                     <Image src={item.image} alt="imag of menu-items" height={100} width={100}/>
