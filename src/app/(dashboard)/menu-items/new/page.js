@@ -1,4 +1,5 @@
 "use client";
+import Menuitemform from "@/app/component/layout/Menuitemform";
 import { Button } from "@/app/component/ui/button";
 import { Input } from "@/app/component/ui/input";
 import { Label } from "@/app/component/ui/label";
@@ -20,34 +21,39 @@ const NewMenuItems = () => {
 
   const handleFormSubmit = async (e,data) => {
     e.preventDefault();
-  
-    const savingPromise = new Promise(async (resolve, reject) => {
+  console.log(data)
+  data = { ...data,image: formData.profilePicture };
+    // const savingPromise = new Promise(async (resolve, reject) => {
       const response = await fetch("/api/menu-items", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
       });
+
+      console.log(response)
       if (response.ok) {
-        resolve();
+        // resolve();
+         setredirecttoItem(true);
         toast({
           title: "Menu Item added successfully",
           variant: "outline",
         });
       } else {
-        reject();
+        // reject();
         toast({
           title: "Error aaya bro ",
           variant: "destructive",
         });
       }
-    });
-    await hottoast.promise(savingPromise, {
-      loading: "Saving this tasty item..",
-      // success:"saved successfully",
-      error: "Error",
-    });
-    setredirecttoItem(true);
-  };
+    }
+    // });
+    // await hottoast.promise(savingPromise, {
+    //   loading: "Saving this tasty item..",
+    //   // success:"saved successfully",
+    //   error: "Error",
+    // });
+    // setredirecttoItem(true);
+  // };
   if (redirecttoItem) {
     return redirect("/menu-items");
   }
@@ -70,7 +76,7 @@ const NewMenuItems = () => {
           </h1>
         </div>
         <div className="max-w-xl mx-auto ">
-          <form className="  " onSubmit={handleFormSubmit}>
+          {/* <form className="  " onSubmit={handleFormSubmit}>
             <div className="grid items-start gap-4">
               <ImageUploader
                 image={image}
@@ -106,7 +112,8 @@ const NewMenuItems = () => {
               </Button>
               <Button type="Submit">Submit</Button>
             </div>
-          </form>
+          </form> */}
+          <Menuitemform menuItem={null} onSubmit={handleFormSubmit} setImageUrl={setImageUrl}/>
           <div className="mt-4"></div>
         </div>
       </div>

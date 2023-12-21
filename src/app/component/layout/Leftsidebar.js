@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -11,24 +11,21 @@ const Leftsidebar = ({ props }) => {
   const [isAdmin, setisAdmin] = useState(false);
   useEffect(() => {
     if (status === "authenticated") {
-    
-   fetch('/api/profile').then(response=>{
-    response.json().then(data=>{
-      console.log(data)
-      
-      setisAdmin(data.admin)
+      fetch("/api/profile").then((response) => {
+        response.json().then((data) => {
+          console.log(data);
 
-    })
-   })
+          setisAdmin(data.admin);
+        });
+      });
     }
   }, [session, status]);
 
+  const [activeLink, setActiveLink] = useState(null);
 
-    const [activeLink, setActiveLink] = useState(null);
-
-    const handleLinkClick = (link) => {
-      setActiveLink(link);
-    };
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
   return (
     <div>
       {/* <Disclosure as="nav">
@@ -41,47 +38,45 @@ const Leftsidebar = ({ props }) => {
       <div className="p-6 w-1/2 h-screen bg-white  fixed top-0 -left-96 lg:left-0 lg:w-60    peer-focus:left-0 peer:transition ease-out delay-150 duration-200 shadow">
         <div className="flex flex-col justify-start item-center">
           <h1 className="text-base text-center cursor-pointer font-bold text-blue-900 border-b border-gray-100 pb-4 w-full">
-            <Link  href={"/profile"}>Dashboard</Link>
+            <Link href={"/profile"}>Dashboard</Link>
           </h1>
           <div className=" my-4 border-b border-gray-100 pb-4">
             <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
               {/* <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " /> */}
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 <Link passHref href={"/profile"}>
-                <span>
-                
-               
-                Profile
-              </span>
+                  <span>Profile</span>
                 </Link>
               </h3>
             </div>
-{
-  isAdmin&&(
-    <>
-
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <CgProfile className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                <Link href={"/categories"}>Categories</Link>
-              </h3>
-            </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                <Link href={"/menu-items"}>Menu-Items</Link>
-              </h3>
-            </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                <Link href={"/users"}>Users</Link>
-              </h3>
-            </div>
-    </>
-
-  )
-}
+            {isAdmin && (
+              <>
+                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                  {/* <CgProfile className="text-2xl text-gray-600 group-hover:text-white " /> */}
+                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                    <Link href={"/categories"}>Categories</Link>
+                  </h3>
+                </div>
+                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                  {/* <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " /> */}
+                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                    <Link href={"/menu-items"}>Menu-Items</Link>
+                  </h3>
+                </div>
+                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                  {/* <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " /> */}
+                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                    <Link href={"/users"}>Users</Link>
+                  </h3>
+                </div>
+                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+                  {/* <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " /> */}
+                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+                    <Link href={"/orders"}>Orders</Link>
+                  </h3>
+                </div>
+              </>
+            )}
             <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
               {/* <BiMessageSquareDots className="text-2xl text-gray-600 group-hover:text-white " /> */}
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
@@ -112,11 +107,12 @@ const Leftsidebar = ({ props }) => {
           </div>
           {/* logout */}
           <div className=" my-4">
-        
-              <Button  onClick={()=>signOut()} className=" group-hover:text-white  ">
-                Logout
-              </Button>
-         
+            <Button
+              onClick={() => signOut()}
+              className=" group-hover:text-white  "
+            >
+              Logout
+            </Button>
           </div>
         </div>
       </div>

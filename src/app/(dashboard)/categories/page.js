@@ -8,6 +8,7 @@ import userprofile from "@/app/hook/userprofile";
 import { Edit, Trash2 } from "lucide-react";
 
 import { useEffect, useState } from "react";
+import DeleteButton from "@/app/lib/DeleteButton";
 
 const page = () => {
   const [newcategoryname, setnewcategoryname] = useState("");
@@ -35,7 +36,7 @@ const page = () => {
         data._id = editCategory._id;
       }
       const response = await fetch("/api/categories", {
-        method: editCategory ? "PUT" : " POST",
+        method: editCategory ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
@@ -145,6 +146,7 @@ const page = () => {
                   onClick={() => handleDeleteClick(c._id)}
                   className=" hover:text-red-500"
                 />
+                {/* <DeleteButton  Label={<Trash2/>} onDelete={()=>handleDeleteClick(c._id)}/> */}
               </div>
             </div>
           ))}

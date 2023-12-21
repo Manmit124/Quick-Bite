@@ -1,5 +1,6 @@
 import Header from "@/app/component/layout/Header";
 import Image from "next/image";
+
 import Hero from "./component/layout/Hero";
 import HomeMenu from "./component/layout/HomeMenu";
 import { ArrowDownToLine, CheckCircle, Leaf } from "lucide-react";

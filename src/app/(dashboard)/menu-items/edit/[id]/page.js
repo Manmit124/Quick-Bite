@@ -5,6 +5,7 @@ import { Input } from "@/app/component/ui/input";
 import { Label } from "@/app/component/ui/label";
 import { toast } from "@/app/component/ui/use-toast";
 import userprofile from "@/app/hook/userprofile";
+import DeleteButton from "@/app/lib/DeleteButton";
 import ImageUploader from "@/app/lib/Imageupload";
 import Link from "next/link";
 import { redirect, useParams } from "next/navigation";
@@ -42,7 +43,7 @@ const NewMenuItems = () => {
       if (response.ok) {
         resolve();
         toast({
-          title: "Menu Item added successfully",
+          title: "Menu Item Edited successfully",
           variant: "outline",
         });
       } else {
@@ -61,14 +62,14 @@ const NewMenuItems = () => {
     setredirecttoItem(true);
   };
   const handleDelete = async (id) => {
-   const Response= await fetch("/api/menu-items?_id=" + id, {
+    const Response = await fetch("/api/menu-items?_id=" + id, {
       method: "DELETE",
     });
-    if(Response.ok){
+    if (Response.ok) {
       toast({
-        title:"Menu_items deleted successfully",
-        variant:"outline"
-      })
+        title: "Menu_items deleted successfully",
+        variant: "outline",
+      });
     }
     setredirecttoItem(true);
   };
@@ -99,10 +100,16 @@ const NewMenuItems = () => {
             setImageUrl={setImageUrl}
             onSubmit={handleFormSubmit}
           />
-          <Button type="button" onClick={() => handleDelete(id)}>
+          {/* <Button type="button" onClick={() => handleDelete(id)}>
             Delete this menu Item
-          </Button>
-          <div className="mt-4"></div>
+          </Button> */}
+
+          <div className="mt-4">
+            <DeleteButton
+              Label={"Menu Item"}
+              onDelete={() => handleDelete(id)}
+            />
+          </div>
         </div>
       </div>
     </div>
