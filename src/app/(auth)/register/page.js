@@ -112,14 +112,14 @@ const page = () => {
           </div>
           <Button onClick={()=>signIn('google',{callbackUrl:'/'})} type="button">Google</Button>
         </div>
-        <p className="px-8 text-center text-sm text-muted-foreground">
           <Link
             href="/login"
             className="hover:text-brand underline underline-offset-4"
           >
+        <p className="px-8 text-center text-sm text-muted-foreground">
              have an account? Login
-          </Link>
         </p>
+          </Link>
       </div>
     </div>
 </div>

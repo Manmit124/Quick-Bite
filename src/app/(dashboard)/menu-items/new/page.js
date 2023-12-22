@@ -62,10 +62,10 @@ const NewMenuItems = () => {
   };
 
   if (loading) {
-    return "Loading user info";
+    return <h1>"Loading....."</h1>;
   }
   if (!data.admin) {
-    return "Not an admin";
+    return <h1>"admin nh hai bhai....."</h1>;
   }
   return (
     <div>

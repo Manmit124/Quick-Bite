@@ -1,28 +1,17 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Input } from "../../component/ui/input";
-import { Label } from "../../component/ui/label";
-import Addressinput from "../../component/layout/Addressinput";
-import { Button } from "../../component/ui/button";
-import {
-  Card,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../component/ui/card";
-import { useToast } from "../../component/ui/use-toast";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { app } from "../../config/firebase";
+
+
 import Link from "next/link";
 import ImageUploader from "@/app/lib/Imageupload";
+import { Label } from "@/app/component/ui/label";
+import { Input } from "@/app/component/ui/input";
+import Addressinput from "@/app/component/layout/Addressinput";
+import { Button } from "@/app/component/ui/button";
+import { CardFooter } from "@/app/component/ui/card";
+import { useToast } from "@/app/component/ui/use-toast";
 
 export default function page() {
   const [image, setimage] = useState(undefined);
@@ -41,6 +30,7 @@ export default function page() {
   const [username, setusername] = useState("");
   const { toast } = useToast();
   const userData = session.data?.user;
+ const {id}=useParams();
 
   let userImage = userData?.image;
   const setImageUrl = (url) => {
@@ -50,8 +40,9 @@ export default function page() {
   useEffect(() => {
     if (status === "authenticated") {
       setusername(session.data.user.name);
-      fetch("/api/profile").then((response) => {
-        response.json().then((data) => {
+      fetch("/api/users").then((response) => {
+        response.json().then((dato) => {
+        const data=dato.find(e=>e._id===id)
           console.log(data);
           setphone(data.phone);
           setstreetAdress(data.streetAdress);
@@ -59,6 +50,7 @@ export default function page() {
           setcity(data.city);
           setcountry(data.country);
           setisAdmin(data.admin);
+          setusername(data.name)
         });
       });
     }
@@ -88,11 +80,12 @@ export default function page() {
         postalcode,
         city,
         country,
+        _id:id,
       }),
     });
     if (response.ok) {
       return toast({
-        title: "Your profile has been updated",
+        title: "Users profile has been updated",
         variant: "outline",
       });
     } else {
@@ -174,7 +167,7 @@ export default function page() {
             </div>
           </div>
           <CardFooter className="justify-between flex mt-8">
-            <Link href={"/"}>
+            <Link href={"/users"}>
               <Button>Cancel</Button>
             </Link>
 

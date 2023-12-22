@@ -83,7 +83,7 @@ const page = () => {
   }
 
   if (ProfileLoading) {
-    return "loadin bhai loading";
+    return <h1>"Loading....."</h1>;
   }
 
   return (

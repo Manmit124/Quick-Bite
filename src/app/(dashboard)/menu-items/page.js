@@ -25,10 +25,10 @@ const page = () => {
   }, []);
 
   if (loading) {
-    return "Loading is ifo";
+    return <h1>"Loading....."</h1>;
   }
   if (!data.admin) {
-    return "Not an Admin";
+    return <h1>"admin nh hai....."</h1>;
   }
 
   return (

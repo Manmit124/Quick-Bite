@@ -3,11 +3,17 @@ import Leftsidebar from "../component/layout/Leftsidebar";
 
 export default function Profo({ children }) {
   return (
-    <div>
+   
+<section className="light">
+
+
+    <div className="root">
    <Toaster/>
       <Leftsidebar />
       {children}
     
     </div>
+    </section>
+  
   );
 }
