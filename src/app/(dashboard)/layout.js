@@ -4,10 +4,10 @@ import Leftsidebar from "../component/layout/Leftsidebar";
 export default function Profo({ children }) {
   return (
    
-<section className="light">
+<section className="">
 
 
-    <div className="root">
+    <div className="">
    <Toaster/>
       <Leftsidebar />
       {children}

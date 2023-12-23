@@ -23,10 +23,10 @@ const Dropdown = () => {
   
   return (
     <>
-    <DropdownMenu>
+    <DropdownMenu className="bg-transparent to-transparent">
       <DropdownMenuTrigger>
         <Image
-          className=" rounded-2xl border-2 border-gray-400   shadow-lg "
+          className=" rounded-2xl     "
           src={userImage}
           width={40}
           height={40}

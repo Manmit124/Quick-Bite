@@ -13,13 +13,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className='dark bg-background antialiased no-scrollbar'>
       <body className={inter.className}>
     <Authprovider>
       {/* <Header /> */}
       {/* <main className="max-w-7xl mx-auto p-4"> */}
+<div className=''>
 
       {children}
+</div>
      
       {/* </main> */}
       <Toaster/>

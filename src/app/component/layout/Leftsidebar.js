@@ -108,11 +108,18 @@ const Leftsidebar = ({ props }) => {
           {/* logout */}
           <div className=" my-4">
             <Button
+              type="button"
               onClick={() => signOut()}
               className=" group-hover:text-white  "
             >
               Logout
             </Button>
+           
+          </div>
+          <div>
+          <Link href={"/"}>
+              <Button>Home Page</Button>
+            </Link>
           </div>
         </div>
       </div>

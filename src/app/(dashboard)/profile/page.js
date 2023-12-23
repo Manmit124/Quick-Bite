@@ -23,6 +23,8 @@ import {
 import { app } from "../../config/firebase";
 import Link from "next/link";
 import ImageUploader from "@/app/lib/Imageupload";
+import { Checkbox } from "@/app/component/ui/checkbox";
+import userprofile from "@/app/hook/userprofile";
 
 export default function page() {
   const [image, setimage] = useState(undefined);
@@ -35,6 +37,7 @@ export default function page() {
   const [city, setcity] = useState("");
   const [country, setcountry] = useState("");
   const [isAdmin, setisAdmin] = useState(false);
+  const {data:loggedInUserData} = userprofile();
 
   const session = useSession();
   const { status } = session;
@@ -88,6 +91,7 @@ export default function page() {
         postalcode,
         city,
         country,
+        admin:isAdmin
       }),
     });
     if (response.ok) {
@@ -124,9 +128,10 @@ export default function page() {
 
   return (
     <>
-      <div className="mt-8">
-        <div className="py-5 mx-auto text-center flex flex-col items-center ">
-          <h1 className="text-3xl font-bold  text-gray-900 sm:text-6xl">
+    <div className="no-scrollbar  mt-0">
+      <div className="mt-8 ">
+        <div className="py-5 mx-auto text-center flex flex-col items-center font-medium ">
+          <h1 className="text-3xl font-bold sm:text-6xl">
             Profile
           </h1>
         </div>
@@ -140,7 +145,7 @@ export default function page() {
             />
             <div className="grow">
               <div className="mb-4">
-                <Label className="block text-gray-700 mb-2">
+                <Label className="block mb-1  leading-normal text-muted-foreground  sm:leading-7">
                   First and Last Name
                 </Label>
                 <Input
@@ -152,7 +157,7 @@ export default function page() {
                 />
               </div>
               <div className="mb-4">
-                <Label className="block text-gray-700 mt-2 mb-2">Email</Label>
+                <Label className="block leading-normal text-muted-foreground  sm:leading-7 mt-2 mb-2">Email</Label>
                 <Input
                   value={userData.email}
                   disabled
@@ -171,6 +176,19 @@ export default function page() {
                 }}
                 setadressProps={hadleaddrresschange}
               />
+                  {loggedInUserData.admin && (
+             <div>
+           
+            <label className="p-2 inline-flex items-center gap-2 mb-2  " htmlFor="adminCb">
+              <input
+                id="adminCb" type="checkbox" className=" px-3 py-3" value={'1'}
+                checked={isAdmin}
+                onChange={ev => setisAdmin(ev.target.checked)}
+              />
+              <span>Admin</span>
+            </label>
+          </div>
+                  )}
             </div>
           </div>
           <CardFooter className="justify-between flex mt-8">
@@ -183,6 +201,7 @@ export default function page() {
             </Button>
           </CardFooter>
         </form>
+      </div>
       </div>
     </>
   );

@@ -9,7 +9,7 @@ const Addressinput = ({ addressProps, setadressProps }) => {
   return (
     <>
       <div className="mb-4">
-        <Label className="block text-gray-700 mb-2">Phone</Label>
+        <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">Phone</Label>
         <Input
           type="tel"
           placeholder="Enter your phone number"
@@ -19,7 +19,7 @@ const Addressinput = ({ addressProps, setadressProps }) => {
         />
       </div>
       <div className="mb-4">
-        <Label className="block text-gray-700 mb-2">Street Address</Label>
+        <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">Street Address</Label>
         <Input
           type="text"
           placeholder="Enter your street address"
@@ -30,7 +30,7 @@ const Addressinput = ({ addressProps, setadressProps }) => {
       </div>
       <div className="grid grid-cols-2 gap-2 mb-4">
         <div>
-          <Label className="block text-gray-700 mb-2">Postal Code</Label>
+          <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">Postal Code</Label>
           <Input
             placeholder="Enter your postal code"
             value={postalcode}
@@ -39,7 +39,7 @@ const Addressinput = ({ addressProps, setadressProps }) => {
           />
         </div>
         <div>
-          <Label className="block text-gray-700 mb-2">City</Label>
+          <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">City</Label>
           <Input
           value={city}
             onChange={(e) => setadressProps('city', e.target.value)}
@@ -49,7 +49,7 @@ const Addressinput = ({ addressProps, setadressProps }) => {
         </div>
       </div>
       <div className="mb-4">
-        <Label className="block text-gray-700 mb-2">Country</Label>
+        <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">Country</Label>
         {/* <Input
          value={country}
           onChange={(e) => setadressProps('country', e.target.value)}

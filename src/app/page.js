@@ -5,6 +5,8 @@ import Hero from "./component/layout/Hero";
 import HomeMenu from "./component/layout/HomeMenu";
 import { ArrowDownToLine, CheckCircle, Leaf } from "lucide-react";
 import MaxWidthWrapper from "./component/layout/MaxWidthWrapper";
+import Snowfall from "react-snowfall";
+import NewNavbar from "./component/layout/NewNavbar";
 const perks = [
   {
     name: "Instant Delivery",
@@ -28,10 +30,16 @@ const perks = [
 export default function Home() {
   return (
     <>
-      <Header />
-      <div className=" mb-80  mt-0 ">
-        <Hero />
-      </div>
+    
+     <div className="mb-0 mt-0">
+
+  
+      <NewNavbar/>
+   
+        <div className=" mb-80    ">
+          <Hero />
+        </div>
+
 
       <HomeMenu />
       <div className="mt-9 p-4 ">
@@ -62,6 +70,7 @@ export default function Home() {
             </div>
           </MaxWidthWrapper>
         </section>
+      </div>
       </div>
     </>
   );

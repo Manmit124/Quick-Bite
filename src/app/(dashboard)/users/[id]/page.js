@@ -12,6 +12,8 @@ import Addressinput from "@/app/component/layout/Addressinput";
 import { Button } from "@/app/component/ui/button";
 import { CardFooter } from "@/app/component/ui/card";
 import { useToast } from "@/app/component/ui/use-toast";
+import { Checkbox } from "@/app/component/ui/checkbox";
+import userprofile from "@/app/hook/userprofile";
 
 export default function page() {
   const [image, setimage] = useState(undefined);
@@ -24,7 +26,7 @@ export default function page() {
   const [city, setcity] = useState("");
   const [country, setcountry] = useState("");
   const [isAdmin, setisAdmin] = useState(false);
-
+  const {data:loggedInUserData} = userprofile();
   const session = useSession();
   const { status } = session;
   const [username, setusername] = useState("");
@@ -81,6 +83,7 @@ export default function page() {
         city,
         country,
         _id:id,
+        admin:isAdmin
       }),
     });
     if (response.ok) {
@@ -164,6 +167,19 @@ export default function page() {
                 }}
                 setadressProps={hadleaddrresschange}
               />
+               {loggedInUserData.admin && (
+             <div>
+           
+            <label className="p-2 inline-flex items-center gap-2 mb-2  " htmlFor="adminCb">
+              <input
+                id="adminCb" type="checkbox" className=" px-3 py-3" value={'1'}
+                checked={isAdmin}
+                onChange={ev => setisAdmin(ev.target.checked)}
+              />
+              <span>Admin</span>
+            </label>
+          </div>
+                  )}
             </div>
           </div>
           <CardFooter className="justify-between flex mt-8">
