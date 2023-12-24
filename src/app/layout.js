@@ -3,6 +3,7 @@ import './globals.css'
 import { SessionProvider } from 'next-auth/react'
 import Authprovider from './component/Authprovider'
 import { Toaster } from './component/ui/toaster'
+import NewNavbar from './component/layout/NewNavbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,7 +14,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className='dark bg-background antialiased no-scrollbar'>
+    <html lang="en" className='dark bg-background antialiased no-scrollbar scroll-smooth'>
       <body className={inter.className}>
     <Authprovider>
       {/* <Header /> */}

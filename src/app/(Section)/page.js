@@ -1,12 +1,12 @@
 import Header from "@/app/component/layout/Header";
 import Image from "next/image";
 
-import Hero from "./component/layout/Hero";
-import HomeMenu from "./component/layout/HomeMenu";
+import HomeMenu from "../component/layout/HomeMenu";
 import { ArrowDownToLine, CheckCircle, Leaf } from "lucide-react";
-import MaxWidthWrapper from "./component/layout/MaxWidthWrapper";
+import MaxWidthWrapper from "../component/layout/MaxWidthWrapper";
 import Snowfall from "react-snowfall";
-import NewNavbar from "./component/layout/NewNavbar";
+import NewNavbar from "../component/layout/NewNavbar";
+import Hero from "../component/layout/Hero";
 const perks = [
   {
     name: "Instant Delivery",
@@ -34,9 +34,9 @@ export default function Home() {
      <div className="mb-0 mt-0">
 
   
-      <NewNavbar/>
+      {/* <NewNavbar/> */}
    
-        <div className=" mb-80    ">
+        <div className="  mb-80 ">
           <Hero />
         </div>
 

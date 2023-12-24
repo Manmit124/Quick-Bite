@@ -1,15 +1,17 @@
 "use client";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import { useSession } from "next-auth/react";
 import { Button } from "../ui/button";
+import { CartContext } from "../Authprovider";
 
 const NewNavbar = () => {
     const location=useParams();
     const session = useSession();
     const status = session?.status;
+    const {cartProducts}=useContext(CartContext)
     let position=true;
   const navbarStyle = {
     opacity: 1,
@@ -24,7 +26,7 @@ const NewNavbar = () => {
     },
     {
       title: "Menu",
-      path: "/contests",
+      path: "/menu",
     },
     {
       title: "About",
@@ -32,7 +34,7 @@ const NewNavbar = () => {
     },
     {
       title: "Contact",
-      path: "/Contact",
+      path: "/contact",
     },
   ];
   function toggleActive() {
@@ -96,6 +98,9 @@ const NewNavbar = () => {
           </>
         )}
           </div>
+          {cartProducts?.length>0 && (
+            <Link href={'/cart'}>{cartProducts.length}</Link>
+          )}
         </div>
       </div>
     </>

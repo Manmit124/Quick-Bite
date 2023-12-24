@@ -1,26 +1,25 @@
-import Image from "next/image";
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import MenuItem from "./MenuItem";
 
 const HomeMenu = () => {
+  const [bestsellers, setbestsellers] = useState([]);
+  useEffect(() => {
+    fetch("/api/menu-items").then((res) => {
+      res.json().then((menuitems) => {
+        setbestsellers(menuitems.slice(-3));
+      });
+    });
+  }, []);
+  console.log(bestsellers);
   return (
-    <section>
-      {/* <div className="absolute left-0 right-0 w-full justify-start">
-    <div className="absolute left-0   -top-[70px] text-left -z-10">
-    <Image src={'/pizza.png'} alt="pizza" width={109} height={189}/>
-    </div>
-    <div className="absolute -top-[100px] right-0 -z-10">
-    <Image src={'/pizza.png'} alt="pizza" width={109} height={189}/>
-    </div>
-   </div> */}
-   <h1 className="  text-center text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Checkout our trendy</h1>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
-        <MenuItem />
+    <section className="container  mx-auto my-10">
+      <h1 className=" bg-gradient-to-br from-black to-neutral-600 bg-clip-text text-center text-4xl font-bold  text-transparent dark:bg-gradient-to-r dark:from-white dark:to-neutral-800 sm:text-left sm:text-5xl md:max-w-2xl top-4 left-5  mt-0 py-3">
+        Checkout our trendy
+      </h1>
+      <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5 mt-10">
+        {bestsellers?.length > 0 &&
+          bestsellers.map((item) => <MenuItem {...item} />)}
       </div>
     </section>
   );
