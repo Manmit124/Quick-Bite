@@ -1,11 +1,18 @@
-import React from 'react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import Image from 'next/image';
-import { Button } from '../ui/button';
-import { ShoppingCart } from 'lucide-react';
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import Image from "next/image";
+import { Button } from "../ui/button";
+import { ShoppingCart } from "lucide-react";
+import Addtocartbutton from "./Addtocartbutton";
 
-const Cardo = ({onAddToCart,...item}) => {
-    const {image,name,basePrice}=item;
+const Cardo = ({ onAddToCart, ...item }) => {
+  const { image, name, basePrice, sizes, extraIngredients } = item;
   return (
     <div className="container bg-transparent scale-100">
       <Card className="max-w-md  bg-transparent rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 cursor-pointer">
@@ -38,17 +45,34 @@ const Cardo = ({onAddToCart,...item}) => {
           </div>
         </CardContent>
         <CardFooter className=" flex items-center justify-center rounded-md border border-transparent  mb-0 text-center text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-blue-300 py-0">
-          <Button
+          {/* <Button
             className=" hover:bg-blue-700  rounded-lg mb-0 py-0 px-14 gap-2"
             onClick={onAddToCart}
             type="button"
           >
-            <ShoppingCart className=" animate-bounce" /> Add to Cart
-          </Button>
+            {sizes?.length > 0 || extraIngredients?.length > 0 ? (
+              <>
+              <ShoppingCart className=" animate-bounce" /> From ${basePrice}
+              </>
+            ) : (
+              <>
+                <ShoppingCart className=" animate-bounce" /> Add to Cart
+              </>
+            )}
+          </Button> */}
+          <Addtocartbutton 
+          sizes={sizes}
+          onClick={onAddToCart}
+          basePrice={basePrice}
+          image={image}
+          extraIngredients={extraIngredients}
+
+
+          />
         </CardFooter>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Cardo
+export default Cardo;

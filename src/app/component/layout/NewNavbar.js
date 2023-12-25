@@ -6,6 +6,7 @@ import Dropdown from "./Dropdown";
 import { useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import { CartContext } from "../Authprovider";
+import { ShoppingCart } from "lucide-react";
 
 const NewNavbar = () => {
     const location=useParams();
@@ -98,9 +99,14 @@ const NewNavbar = () => {
           </>
         )}
           </div>
+            <Link href={'/cart'}>
+            <ShoppingCart />
           {cartProducts?.length>0 && (
-            <Link href={'/cart'}>{cartProducts.length}</Link>
+            <span className="absolute top-1 right-1    text-xs py-1 px-1 rounded-full leading-3">
+            {cartProducts.length}
+          </span>
           )}
+          </Link>
         </div>
       </div>
     </>

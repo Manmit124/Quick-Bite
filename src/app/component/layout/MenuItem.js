@@ -32,14 +32,28 @@ const MenuItem = (menuItem) => {
   const [showPopup, setshowPopup] = useState(false);
   const [selectedSize, setSelectedSize] = useState(sizes?.[0] || null);
   const [selectedExtras, setSelectedExtras] = useState([]);
-  function handleAddToCartButtonClick() {
-    if (sizes.length === 0 && extraIngredients.length === 0) {
-      addToCart(menuItem);
-      toast.success("Added to cart");
-    } else {
+  async function handleAddToCartButtonClick() {
+    const hasOptions = sizes.length > 0 || extraIngredients.length > 0;
+    if (hasOptions && !showPopup) {
       setshowPopup(true);
+      return;
+    }
+    addToCart(menuItem,selectedSize,selectedExtras)
+    await new Promise(resolve=>setTimeout(resolve,1000))
+    setshowPopup(false)
+
+  }
+  function handleExtraThingClick(ev, extraThing) {
+    const checked = ev.target.checked;
+    if (checked) {
+      setSelectedExtras((prev) => [...prev, extraThing]);
+    } else {
+      setSelectedExtras((prev) => {
+        return prev.filter((e) => e.name !== extraThing.name);
+      });
     }
   }
+  
   let selectedPrice = Number(basePrice);
   if (selectedSize) {
     selectedPrice += selectedSize.price;
@@ -49,20 +63,7 @@ const MenuItem = (menuItem) => {
       selectedPrice += extra.price;
     }
   }
-  function handleExtraThingClick(ev, extraThing) {
-    const checked = ev.target.checked;
-    if (checked) {
-      setSelectedExtras(prev => [...prev, extraThing]);
-    } else {
-      setSelectedExtras(prev => {
-        return prev.filter(e => e.name !== extraThing.name);
-      });
-    }
-  }
-  
-
   return (
-   
     <>
       {showPopup && (
         <div
@@ -104,9 +105,7 @@ const MenuItem = (menuItem) => {
                         className="p-2 cursor-pointer "
                       />
                       {size.name} ${Number(basePrice) + Number(size.price)}
-                      
                     </label>
-                    
                   ))}
                 </div>
               )}
@@ -133,13 +132,16 @@ const MenuItem = (menuItem) => {
                 </div>
               )}
               <div className="flex justify-between">
-
-
-              <Button variant="destructive" onClick={() => setshowPopup(false)}>
-                Cancel
-              </Button>
-              <Badge>Total Price={selectedPrice}</Badge>
-             <Button>Pay </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => setshowPopup(false)}
+                >
+                  Cancel
+                </Button>
+                <Badge>Total Price={selectedPrice}</Badge>
+                <Button onClick={handleAddToCartButtonClick} type="button">
+                  Continue
+                </Button>
               </div>
             </div>
           </div>

@@ -1,7 +1,22 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import React, { createContext, useEffect, useState } from "react";
+import { toast } from "./ui/use-toast";
 export const CartContext = createContext({});
+
+export function cartProductprice(cartProduct){
+  let price = Number(cartProduct.basePrice);
+  if (cartProduct.size) {
+    price += cartProduct.size.price;
+  }
+  if (cartProduct.extras?.length > 0) {
+    for (const extra of cartProduct.extras) {
+      price += extra.price;
+    }
+  }
+  return Number(price);
+}
+
 const Authprovider = ({ children }) => {
   const [cartProducts, setcartProducts] = useState([]);
   const ls = typeof window !== "undefined" ? window.localStorage : null;
@@ -11,6 +26,8 @@ const Authprovider = ({ children }) => {
       setcartProducts(JSON.parse(ls.getItem("cart")));
     }
   }, []);
+
+
 
   function clearCart() {
     setcartProducts([]);
@@ -24,6 +41,11 @@ const Authprovider = ({ children }) => {
       saveCartProductToLocalStorage(newCartProduct);
       return newCartProduct;
     });
+    toast({
+      title: 'Product Removed',
+      description:'prodcut removed from your Bucket',
+      variant:"outline"
+    })
   }
   function saveCartProductToLocalStorage(cartProducts) {
     if (ls) {
@@ -42,7 +64,13 @@ const Authprovider = ({ children }) => {
   return (
     <SessionProvider>
       <CartContext.Provider
-        value={{ cartProducts, setcartProducts, addToCart,removeCartProduct,clearCart }}
+        value={{
+          cartProducts,
+          setcartProducts,
+          addToCart,
+          removeCartProduct,
+          clearCart,
+        }}
       >
         {children}
       </CartContext.Provider>

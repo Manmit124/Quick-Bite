@@ -26,7 +26,7 @@ const Dropdown = () => {
     <DropdownMenu className="bg-transparent to-transparent">
       <DropdownMenuTrigger>
         <Image
-          className=" rounded-2xl     "
+          className=" rounded-2xl  object-cover    "
           src={userImage}
           width={40}
           height={40}
