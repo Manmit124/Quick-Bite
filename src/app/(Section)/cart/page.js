@@ -5,6 +5,7 @@ import CartProduct from "@/app/component/layout/CartProduct";
 import { toast } from "@/app/component/ui/use-toast";
 import userprofile from "@/app/hook/userprofile";
 import React, { useContext, useEffect, useState } from "react";
+import { toast as hottoast } from "react-hot-toast";
 
 const page = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
@@ -59,10 +60,15 @@ const page = () => {
           });
           window.location = await response.json();
         } else {
+
           reject();
         }
       });
+
     });
+    hottoast.promise(promise,{
+      loading:"Preparing your order.."
+    })
   }
 
   if (cartProducts?.length === 0) {

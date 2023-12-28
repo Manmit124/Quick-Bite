@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react'
 import Authprovider from './component/Authprovider'
 import { Toaster } from './component/ui/toaster'
 import NewNavbar from './component/layout/NewNavbar'
+import { Toaster as HotToaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
      
       {/* </main> */}
       <Toaster/>
+      <HotToaster/>
       </Authprovider>
       
       </body>
