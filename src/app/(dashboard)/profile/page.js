@@ -32,8 +32,8 @@ export default function page() {
   const [formData, setformData] = useState({});
   console.log(imagepercentage);
   const [phone, setphone] = useState("");
-  const [streetAdress, setstreetAdress] = useState("");
-  const [postalcode, setpostalcode] = useState("");
+  const [streetAddress, setstreetAddress] = useState("");
+  const [postalCode, setpostalCode] = useState("");
   const [city, setcity] = useState("");
   const [country, setcountry] = useState("");
   const [isAdmin, setisAdmin] = useState(false);
@@ -57,8 +57,8 @@ export default function page() {
         response.json().then((data) => {
           console.log(data);
           setphone(data.phone);
-          setstreetAdress(data.streetAdress);
-          setpostalcode(data.postalcode);
+          setstreetAddress(data.streetAddress);
+          setpostalCode(data.postalCode);
           setcity(data.city);
           setcountry(data.country);
           setisAdmin(data.admin);
@@ -71,9 +71,9 @@ export default function page() {
   const hadleaddrresschange = (propName, value) => {
     if (propName === "phone") setphone(value);
     console.log(phone);
-    if (propName === "streetAdress") setstreetAdress(value);
-    console.log(streetAdress);
-    if (propName === "postalcode") setpostalcode(value);
+    if (propName === "streetAddress") setstreetAddress(value);
+    console.log(streetAddress);
+    if (propName === "postalCode") setpostalCode(value);
 
     if (propName === "city") setcity(value);
     if (propName === "country") setcountry(value);
@@ -86,9 +86,9 @@ export default function page() {
       body: JSON.stringify({
         name: username,
         image: formData.profilePicture,
-        streetAdress,
+        streetAddress,
         phone,
-        postalcode,
+        postalCode,
         city,
         country,
         admin:isAdmin
@@ -169,8 +169,8 @@ export default function page() {
               <Addressinput
                 addressProps={{
                   phone,
-                  streetAdress,
-                  postalcode,
+                  streetAddress,
+                  postalCode,
                   city,
                   country,
                 }}

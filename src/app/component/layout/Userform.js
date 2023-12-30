@@ -13,16 +13,16 @@ const Userform = ({ user,onSave,setImageUrl }) => {
   const [image, setimage] = useState(user?.image || "");
   const [formData, setformData] = useState({});
   const [phone, setphone] = useState(user?.phone || "");
-  const [streetAdress, setstreetAdress] = useState(user?.streetAdress || "");
-  const [postalcode, setpostalcode] = useState(user?.postalCode || "");
+  const [streetAddress, setstreetAddress] = useState(user?.streetAddress || "");
+  const [postalCode, setpostalCode] = useState(user?.postalCode || "");
   const [city, setcity] = useState(user?.city || "");
   const [country, setcountry] = useState(user?.country || "");
   const hadleaddrresschange = (propName, value) => {
     if (propName === "phone") setphone(value);
     console.log(phone);
-    if (propName === "streetAdress") setstreetAdress(value);
-    console.log(streetAdress);
-    if (propName === "postalcode") setpostalcode(value);
+    if (propName === "streetAddress") setstreetAddress(value);
+    console.log(streetAddress);
+    if (propName === "postalCode") setpostalCode(value);
 
     if (propName === "city") setcity(value);
     if (propName === "country") setcountry(value);
@@ -36,7 +36,7 @@ const Userform = ({ user,onSave,setImageUrl }) => {
         </h1>
       </div>
 
-      <form className=" max-w-xl mx-auto  " onSubmit={(e)=>onSave(e,{name:username,image,phone,streetAdress,postalcode,city,country
+      <form className=" max-w-xl mx-auto  " onSubmit={(e)=>onSave(e,{name:username,image,phone,streetAddress,postalCode,city,country
 
       })}>
         <div className="flex gap-2 ">
@@ -71,8 +71,8 @@ const Userform = ({ user,onSave,setImageUrl }) => {
             <Addressinput
               addressProps={{
                 phone,
-                streetAdress,
-                postalcode,
+                streetAddress,
+                postalCode,
                 city,
                 country,
               }}

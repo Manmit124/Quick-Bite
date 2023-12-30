@@ -1,11 +1,17 @@
 import { Category } from "@/app/models/Category";
 import { connectToDB } from "@/app/utils/connectto";
+import { isAdmin } from "../auth/[...nextauth]/route";
 
 export async function POST(req) {
-  connectToDB()
+  connectToDB();
   const { name } = await req.json();
-  const categoryDoc = await Category.create({ name });
-  return Response.json(categoryDoc);
+  if(await isAdmin()){
+
+    const categoryDoc = await Category.create({ name });
+    return Response.json(categoryDoc);
+  }else{
+    return Response.json({})
+  }
 }
 export async function GET(req, res) {
   connectToDB();
@@ -13,15 +19,19 @@ export async function GET(req, res) {
 }
 
 export async function PUT(req) {
-  connectToDB()
+  connectToDB();
   const { _id, name } = await req.json();
-  await Category.updateOne({ _id }, { name });
+  if (isAdmin()) {
+    await Category.updateOne({ _id }, { name });
+  }
   return Response.json(true);
 }
-export async function DELETE(req){
+export async function DELETE(req) {
   connectToDB();
- const url=new URL(req.url)
- const _id=url.searchParams.get('_id')
- await Category.deleteOne({_id})
+  const url = new URL(req.url);
+  const _id = url.searchParams.get("_id");
+  if (await isAdmin()) {
+    await Category.deleteOne({ _id });
+  }
   return Response.json(true);
 }

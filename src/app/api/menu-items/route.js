@@ -1,5 +1,6 @@
 import { MenuItem } from "@/app/models/MenuItem";
 import { connectToDB } from "@/app/utils/connectto";
+import { isAdmin } from "../auth/[...nextauth]/route";
 
 export async function POST(req) {
   connectToDB();
@@ -29,18 +30,23 @@ export async function POST(req) {
 }
 export async function PUT(req) {
   connectToDB();
-  const { _id, ...data } = await req.json();
-  await MenuItem.findByIdAndUpdate(_id, data);
+  if (await isAdmin()) {
+    const { _id, ...data } = await req.json();
+    await MenuItem.findByIdAndUpdate(_id, data);
+  }
   return Response.json(true);
 }
 export async function GET() {
   connectToDB();
+
   return Response.json(await MenuItem.find());
 }
 export async function DELETE(req) {
   connectToDB();
   const url = new URL(req.url);
   const _id = url.searchParams.get("_id");
-  await MenuItem.deleteOne({ _id });
+  if (await isAdmin()) {
+    await MenuItem.deleteOne({ _id });
+  }
   return Response.json(true);
 }

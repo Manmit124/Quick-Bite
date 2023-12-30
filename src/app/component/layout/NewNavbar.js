@@ -1,19 +1,22 @@
 "use client";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Dropdown from "./Dropdown";
 import { useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import { CartContext } from "../Authprovider";
-import { ShoppingCart } from "lucide-react";
+import { SearchIcon, ShoppingCart } from "lucide-react";
+import MobNav from "./MobNav";
+import SearchComponent from "./Search";
 
 const NewNavbar = () => {
-    const location=useParams();
-    const session = useSession();
-    const status = session?.status;
-    const {cartProducts}=useContext(CartContext)
-    let position=true;
+
+  const location = useParams();
+  const session = useSession();
+  const status = session?.status;
+  const { cartProducts } = useContext(CartContext);
+  let position = true;
   const navbarStyle = {
     opacity: 1,
     transform: "none",
@@ -30,13 +33,13 @@ const NewNavbar = () => {
       path: "/menu",
     },
     {
-      title: "About",
-      path: "/about",
-    },
-    {
       title: "Contact",
       path: "/contact",
     },
+    // {
+    //   title: <SearchIcon/>,
+    //   path: "/about",
+    // },
   ];
   function toggleActive() {
     if (window.innerWidth < 768) {
@@ -47,13 +50,35 @@ const NewNavbar = () => {
       }
     }
   }
+
+  const searchRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    // Check if the click was inside the search component or its children
+    if (searchRef.current && !searchRef.current.contains(event.target)) {
+      // Clicked outside the search component, close it
+      setshowsearch(false);
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("click", handleClickOutside);
+
+    // Remove event listener when the component unmounts
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [searchRef]);
+
   useEffect(() => {
     document.body.className = isMenuActive ? "overflow-hidden" : "";
   }, [isMenuActive]);
 
   return (
     <>
-      <div
+      <MobNav isMenuActive={isMenuActive} toggleActive={toggleActive} />
+      <div 
         className={`${
           position ? position : "sticky"
         } inset-x-0  z-50 sticky  pt-0 top-3 hidden justify-center md:flex pointer-events-auto w-fit m-auto mb-0 border rounded-lg `}
@@ -62,7 +87,7 @@ const NewNavbar = () => {
         <div className="flex cursor-pointer items-center gap-4 rounded-full bg p-2">
           <Link href="/">
             <div className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-zinc-100">
-             <h1 className="text-bold ">Cafe</h1>
+              <h1 className="text-bold ">Cafe</h1>
             </div>
           </Link>
           <div className="flex items-center">
@@ -80,32 +105,38 @@ const NewNavbar = () => {
                 {navLink.title}
               </Link>
             ))}
+          </div>
         
-          </div>
           <div className="flex justify-end gap-2">
-          {status === "authenticated" && (
-          <>
-            <Dropdown />
-          </>
-        )}
-        {status === "unauthenticated" && (
-          <>
-            <Button className=" text-zinc-700 cursor-pointer rounded-full transition" variant={"ghost"}>
-              <Link href={"/register"}>Register</Link>
-            </Button>
-            <Button className=" text-zinc-700 cursor-pointer rounded-full transition" variant={"outline"}>
-              <Link href={"/login"}>Login</Link>
-            </Button>
-          </>
-        )}
+            {status === "authenticated" && (
+              <>
+                <Dropdown />
+              </>
+            )}
+            {status === "unauthenticated" && (
+              <>
+                <Button
+                  className=" text-zinc-700 cursor-pointer rounded-full transition"
+                  variant={"ghost"}
+                >
+                  <Link href={"/register"}>Register</Link>
+                </Button>
+                <Button
+                  className=" text-zinc-700 cursor-pointer rounded-full transition"
+                  variant={"outline"}
+                >
+                  <Link href={"/login"}>Login</Link>
+                </Button>
+              </>
+            )}
           </div>
-            <Link href={'/cart'}>
+          <Link href={"/cart"}>
             <ShoppingCart />
-          {cartProducts?.length>0 && (
-            <span className="absolute top-1 right-1    text-xs py-1 px-1 rounded-full leading-3">
-            {cartProducts.length}
-          </span>
-          )}
+            {cartProducts?.length > 0 && (
+              <span className="absolute top-1 right-1    text-xs py-1 px-1 rounded-full leading-3">
+                {cartProducts.length}
+              </span>
+            )}
           </Link>
         </div>
       </div>

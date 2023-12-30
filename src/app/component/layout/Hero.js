@@ -2,17 +2,18 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import piza from "../../../../public/pizza.png";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, SearchIcon } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import Snowfall from "react-snowfall";
+import SearchComponent from "./Search";
 
 const Hero = () => {
   const words = ["Pizza", "Samosa", "momos", "Dosa", "Magi"]; // Updated array
   const [currentIndex, setCurrentIndex] = useState(0);
   const [intervalTime, setIntervalTime] = useState(10000);
-
+  const [showsearch, setshowsearch] = useState(false);
   useEffect(() => {
     const interval = setInterval(() => {
       // Rotate to the next word
@@ -56,42 +57,36 @@ const Hero = () => {
           </Button>
         </div>
         </div>  */}
-        <Snowfall color="gray" snowflakeCount={100}/>
+      <Snowfall color="gray" snowflakeCount={100} />
       <div className="mx-auto  max-w-7xl flex-1  items-center  justify-center relative">
+     
         <div className="mt-40 items-center justify-between sm:mt-32 md:flex">
           <div className=" ">
-            <div className=" mx-auto   flex h-7 w-fit items-center rounded-md bg-[#3a1703] px-2 sm:ml-0  ">
-              <p className="text-sm text-[#f56324]">
-                Currently in private beta
-              </p>
-            </div>
-
             <div className=" mb-0 mt-0">
-              <h1 className=" mt-0 bg-gradient-to-br from-black to-neutral-600 bg-clip-text text-center text-4xl font-bold  text-transparent dark:bg-gradient-to-r dark:from-white dark:to-neutral-800 sm:text-left sm:text-5xl md:max-w-2xl  xl:text-7xl/none ">
+              <h1 className="  mt-0 bg-gradient-to-br from-black to-neutral-600 bg-clip-text text-center text-4xl font-bold  text-transparent dark:bg-gradient-to-r dark:from-white dark:to-neutral-800 sm:text-left sm:text-5xl md:max-w-2xl  xl:text-7xl/none ">
                 Every Delicious food in the house
               </h1>
 
-              <div className="px-4 text-neutral-600 lg:px-0 ">
-                <p className="mt-6 max-w-xl text-center sm:text-left">
+              <div className="px-4 text-neutral-600 lg:px-0 sm:p-5  ">
+                <p className="mt-6  max-w-xl text-center sm:text-left">
                   Build, test and, and send transactional emails at scale.
                   Resend provides the best developer experience helping you
                   reach users instead of spam folders{" "}
                 </p>
-                <div className="mt-4">
-                  <h1 className="text-center sm:text-left">
-                    Press{" "}
-                    <span className="rounded-md border border-neutral-600 bg-neutral-800  px-1 text-sm ">
-                      A
-                    </span>{" "}
-                    to request access
-                  </h1>
+                <div className="mt-4 flex gap-2">
+                  <h1 className=" text-2xl  ">Just go and Checkout</h1>
+                  <Link
+                    className=" text-white text-3xl   animate-in"
+                    href={"/menu"}
+                  >
+                    Menu{" "}
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
 
           <div>
-          
             <video
               src={require("../../../../public/cube.mp4")}
               autoPlay

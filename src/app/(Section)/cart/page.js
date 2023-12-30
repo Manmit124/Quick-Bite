@@ -11,13 +11,25 @@ const page = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [address, setAddress] = useState({});
   const { data: profileData } = userprofile();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.location.href.includes("canceled=1")) {
+       hottoast.error('Payment Failed');
+       toast({
+        title:"Payment Failed",
+        variant:"destructive"
+       })
+      }
+    }
+  }, []);
   useEffect(() => {
     if (profileData?.city) {
-      const { phone, streetAdress, postalcode, city, country } = profileData;
+      const { phone, streetAddress, postalCode, city, country } = profileData;
       const addressFromProfile = {
         phone,
-        streetAdress,
-        postalcode,
+        streetAddress,
+        postalCode,
         city,
         country,
       };
@@ -60,15 +72,13 @@ const page = () => {
           });
           window.location = await response.json();
         } else {
-
           reject();
         }
       });
-
     });
-    hottoast.promise(promise,{
-      loading:"Preparing your order.."
-    })
+    hottoast.promise(promise, {
+      loading: "Preparing your order..",
+    });
   }
 
   if (cartProducts?.length === 0) {

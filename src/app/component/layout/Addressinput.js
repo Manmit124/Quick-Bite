@@ -3,14 +3,15 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 
-const Addressinput = ({ addressProps, setadressProps }) => {
-  const { phone, streetAdress, postalcode, city, country } = addressProps;
+const Addressinput = ({ addressProps, setadressProps,disabled=false }) => {
+  const { phone, streetAddress, postalCode, city, country } = addressProps;
 
   return (
     <>
       <div className="mb-4">
         <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">Phone</Label>
         <Input
+        disabled={disabled}
           type="tel"
           placeholder="Enter your phone number"
           value={phone}
@@ -21,10 +22,11 @@ const Addressinput = ({ addressProps, setadressProps }) => {
       <div className="mb-4">
         <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">Street Address</Label>
         <Input
+        disabled={disabled}
           type="text"
           placeholder="Enter your street address"
-          value={streetAdress}
-          onChange={(e) => setadressProps("streetAdress", e.target.value)}
+          value={streetAddress}
+          onChange={(e) => setadressProps("streetAddress", e.target.value)}
           className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
         />
       </div>
@@ -32,15 +34,17 @@ const Addressinput = ({ addressProps, setadressProps }) => {
         <div>
           <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">Postal Code</Label>
           <Input
+            disabled={disabled}
             placeholder="Enter your postal code"
-            value={postalcode}
-            onChange={(e) => setadressProps("postalcode", e.target.value)}
+            value={postalCode}
+            onChange={(e) => setadressProps("postalCode", e.target.value)}
             className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
         <div>
           <Label className="block leading-normal text-muted-foreground  sm:leading-7 mb-2">City</Label>
           <Input
+            disabled={disabled}
           value={city}
             onChange={(e) => setadressProps('city', e.target.value)}
             placeholder="Enter your city"
@@ -56,7 +60,7 @@ const Addressinput = ({ addressProps, setadressProps }) => {
           placeholder="Enter your country"
           className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
         /> */}
-        <Select>
+        <Select   disabled={disabled}>
         <SelectTrigger className="w-[180px]">
         <SelectValue placeholder={country} />
       </SelectTrigger>

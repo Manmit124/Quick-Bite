@@ -19,7 +19,7 @@ const DeleteButton = ({ Label, onDelete }) => {
   return (
     <>
       <Button type="button" onClick={() => setshowDelete(true)}>
-        {Label}
+     Delete
       </Button>
 
       <AlertDialog open={showDelete} onOpenChange={setshowDelete}>
