@@ -1,68 +1,49 @@
-"use client"
-import userprofile from '@/app/hook/userprofile';
-import { dbTimeForHuman } from '@/app/lib/datetime';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+"use client";
+import OrderItem from "@/app/component/layout/OrderItem";
+import userprofile from "@/app/hook/userprofile";
 
-const page = () => {
+import React, { useEffect, useState } from "react";
+
+const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  const {loading, data:profile} = userprofile();
-useEffect(()=>{
-  fetchOrders();
+  const { loading, data: profile } = userprofile();
 
-},[])
-function fetchOrders(){
-  setLoadingOrders(true)
-  fetch('/api/orders').then(res=>{
-    res.json().then(orders=>{
+  useEffect(() => {
+    fetchOrders();
+    console.log(orders.paid)
+  }, []);
+
+  const fetchOrders = async () => {
+    setLoadingOrders(true);
+
+    try {
+      const response = await fetch('/api/orders');
+      const orders = await response.json();
+
       setOrders(orders.reverse());
-      setLoadingOrders(false)
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
 
-    })
-  })
-}
   return (
-   <section className="mt-8 max-w-2xl mx-auto">
-    
+    <section className="mt-8 max-w-2xl mx-auto">
+      <div className="lg:py-5 mx-auto text-center flex flex-col items-center">
+        <h1 className="text-3xl font-bold sm:text-6xl lg:my-3">Orders</h1>
+      </div>
       <div className="mt-8">
-        {loadingOrders && (
+        {loadingOrders ? (
           <div>Loading orders...</div>
+        ) : (
+          orders.length > 0 &&
+          orders.map((order) => <OrderItem key={order._id} order={order} />)
         )}
-        {orders?.length > 0 && orders.map(order => (
-          <div
-            key={order._id}
-            className="border mb-2 p-4 rounded-lg flex flex-col md:flex-row items-center gap-6">
-            <div className="grow flex flex-col md:flex-row items-center gap-6">
-              <div>
-                <div className={
-                  (order.paid ? 'bg-green-500' : 'bg-red-400')
-                  + ' p-2 rounded-md text-white w-24 text-center'
-                }>
-                  {order.paid ? 'Paid' : 'Not paid'}
-                </div>
-              </div>
-              <div className="grow">
-                <div className="flex gap-2 items-center mb-1">
-                  <div className="grow">{order.userEmail}</div>
-                  <div className="text-gray-500 text-sm">{dbTimeForHuman(order.createdAt)}</div>
-                </div>
-                <div className="text-gray-500 text-xs">
-                  {order.cartProducts.map(p => p.name).join(', ')}
-                </div>
-              </div>
-            </div>
-            <div className="justify-end flex gap-2 items-center whitespace-nowrap border rounded-md p-2 hover:bg-white hover:text-black">
-              <Link href={"/orders/"+order._id}>
-                Show order
-              </Link>
-            </div>
-            
-          </div>
-        ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default page
+export default OrdersPage;

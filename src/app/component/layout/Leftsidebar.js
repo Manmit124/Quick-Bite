@@ -2,10 +2,18 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 
+import { useParams, usePathname, useRouter } from "next/navigation";
+import LogoutButton from "./LogoutButton";
+import dynamic from "next/dynamic";
+
+const Bottombar = dynamic(() => import('./Bottombar'), { ssr: false });
+
 const Leftsidebar = ({ props }) => {
+const router=usePathname();
+
   const session = useSession();
   const { status } = session;
   const [isAdmin, setisAdmin] = useState(false);
@@ -13,7 +21,7 @@ const Leftsidebar = ({ props }) => {
     if (status === "authenticated") {
       fetch("/api/profile").then((response) => {
         response.json().then((data) => {
-          console.log(data);
+         
 
           setisAdmin(data.admin);
         });
@@ -22,108 +30,158 @@ const Leftsidebar = ({ props }) => {
   }, [session, status]);
 
   const [activeLink, setActiveLink] = useState(null);
+  const [isMenuActive, setActive] = useState(false);
+
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
+  function toggleActive() {
+    if (window.innerWidth < 1100) {
+      if (isMenuActive) {
+        setActive(false);
+      } else {
+        setActive(true);
+      }
+    }
+  }
+
+  const searchRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    // Check if the click was inside the search component or its children
+    if (searchRef.current && !searchRef.current.contains(event.target)) {
+      // Clicked outside the search component, close it
+      setshowsearch(false);
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("click", handleClickOutside);
+
+    // Remove event listener when the component unmounts
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [searchRef]);
+
+  useEffect(() => {
+    document.body.className = isMenuActive ? "overflow-hidden" : "";
+  }, [isMenuActive]);
+  useEffect(() => {
+    // Get the current route path without query parameters
+    const currentPath = router;
+    
+
+    // Check if the current path matches any of the links
+    const isProfileActive = currentPath === '/profile';
+    const isCategoriesActive = currentPath === '/categories';
+    const isMenuItemsActive = currentPath === '/menu-items';
+    const isUsersActive = currentPath === '/users';
+    const isOrdersActive = currentPath === '/orders';
+    const isMessageActive = currentPath === '/message';
+
+    // Set the active link based on the current route
+    if (isProfileActive) {
+      setActiveLink('/profile');
+    } else if (isCategoriesActive) {
+      setActiveLink('/categories');
+    } else if (isMenuItemsActive) {
+      setActiveLink('/menu-items');
+    } else if (isUsersActive) {
+      setActiveLink('/users');
+    } else if (isOrdersActive) {
+      setActiveLink('/orders');
+    } else if (isMessageActive) {
+      setActiveLink('/message');
+    } else {
+      setActiveLink(null);
+    }
+   
+  });
+ 
   return (
-    <div>
-      {/* <Disclosure as="nav">
-      <Disclosure.Button className="absolute top-4 right-4 inline-flex items-center peer justify-center rounded-md p-2 text-gray-800 hover:bg-gray-900 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
-        <GiHamburgerMenu
-          className="block md:hidden h-6 w-6"
-          aria-hidden="true"
-        />
-      </Disclosure.Button> */}
-      <div className="p-6 w-1/2 h-screen bg-white  fixed top-0 -left-96 lg:left-0 lg:w-60    peer-focus:left-0 peer:transition ease-out delay-150 duration-200 shadow">
+    <>
+    <Bottombar isMenuActive={isMenuActive} toggleActive={toggleActive}/>
+    <div className="p-6 w-1/2 h-screen bg-white fixed top-0 -left-96 lg:left-0 lg:w-60 peer-focus:left-0 peer:transition ease-out delay-150 duration-200 shadow lg:block hidden">
         <div className="flex flex-col justify-start item-center">
           <h1 className="text-base text-center cursor-pointer font-bold text-blue-900 border-b border-gray-100 pb-4 w-full">
             <Link href={"/profile"}>Dashboard</Link>
           </h1>
-          <div className=" my-4 border-b border-gray-100 pb-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+          <div className="my-4 border-b border-gray-100 pb-4">
                 <Link passHref href={"/profile"}>
+            <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-black hover:text-white p-2 rounded-md group cursor-pointer ${activeLink === '/profile' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+              <h3 className="text-base">
                   <span>Profile</span>
-                </Link>
               </h3>
             </div>
+                </Link>
             {isAdmin && (
               <>
-                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                  {/* <CgProfile className="text-2xl text-gray-600 group-hover:text-white " /> */}
-                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                    <Link href={"/categories"}>Categories</Link>
+                    <Link href={"/categories"}>
+                <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:text-white hover:bg-black p-2 rounded-md group cursor-pointer ${activeLink === '/categories' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+                  <h3 className="text-base">
+                    Categories
+                    
                   </h3>
                 </div>
-                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                  {/* <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " /> */}
-                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                    <Link href={"/menu-items"}>Menu-Items</Link>
+                    </Link>
+                    <Link href={"/menu-items"}>
+                <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:text-white hover:bg-black p-2 rounded-md group cursor-pointer ${activeLink === '/menu-items' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+                  <h3 className="text-base">
+                    Menu-Items
                   </h3>
                 </div>
-                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                  {/* <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " /> */}
-                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                    <Link href={"/users"}>Users</Link>
+                    </Link>
+                    <Link href={"/users"}>
+                <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:text-white hover:bg-black p-2 rounded-md group cursor-pointer ${activeLink === '/users' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+                  <h3 className="text-base">
+                    Users
                   </h3>
                 </div>
-                <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-                  {/* <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " /> */}
-                  <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                    <Link href={"/orders"}>Orders</Link>
+                    </Link>
+                    <Link href={"/orders"}>
+                <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:text-white hover:bg-black p-2 rounded-md group cursor-pointer ${activeLink === '/orders' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+                  <h3 className="text-base">
+                    Orders
                   </h3>
                 </div>
+                    </Link>
               </>
             )}
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <BiMessageSquareDots className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                <Link href={"/message"}>Message</Link>
+                <Link href={"/message"}>
+            <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:text-white hover:bg-black p-2 rounded-md group cursor-pointer ${activeLink === '/message' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+              <h3 className="text-base">
+                Message
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <MdOutlineIntegrationInstructions className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                Integration
-              </h3>
-            </div>
-          </div>
-          {/* setting  */}
-          <div className=" my-4 border-b border-gray-100 pb-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <MdOutlineSettings className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                Settings
-              </h3>
-            </div>
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              {/* <MdOutlineMoreHoriz className="text-2xl text-gray-600 group-hover:text-white " /> */}
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
-                More
-              </h3>
+                </Link>
+            <div className={`flex mb-2 justify-start items-center hover:text-white gap-4 pl-5 hover:bg-black p-2 rounded-md group cursor-pointer ${activeLink === '/integration' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+              <h3 className="text-base">
+              Integration</h3>
+
             </div>
           </div>
-          {/* logout */}
-          <div className=" my-4">
-            <Button
-              type="button"
-              onClick={() => signOut()}
-              className=" group-hover:text-white  "
-            >
-              Logout
-            </Button>
-           
+          <div className="my-4 border-b border-gray-100 pb-4">
+            <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer ${activeLink === '/settings' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+              <h3 className="text-base">Settings</h3>
+            </div>
+            <div className={`flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer ${activeLink === '/more' ? 'shadow-lg bg-black text-white' : 'text-gray-800 group-hover:text-white font-semibold'}`}>
+              <h3 className="text-base">More</h3>
+            </div>
           </div>
-          <div>
-          <Link href={"/"}>
+          <div className="my-4 " >
+          <LogoutButton/>
+          </div>
+          <div className=" "> 
+            <Link href={"/"} >
               <Button>Home Page</Button>
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

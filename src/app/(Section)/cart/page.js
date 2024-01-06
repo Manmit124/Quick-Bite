@@ -6,23 +6,22 @@ import { toast } from "@/app/component/ui/use-toast";
 import userprofile from "@/app/hook/userprofile";
 import React, { useContext, useEffect, useState } from "react";
 import { toast as hottoast } from "react-hot-toast";
-
+const AddressInputMemoized = React.memo(Addressinput);
 const page = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [address, setAddress] = useState({});
   const { data: profileData } = userprofile();
 
+  const isPaymentFailed = window.location.href.includes("canceled=1");
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.location.href.includes("canceled=1")) {
-       hottoast.error('Payment Failed');
-       toast({
-        title:"Payment Failed",
-        variant:"destructive"
-       })
-      }
+    if (isPaymentFailed) {
+      hottoast.error('Payment Failed');
+      toast({
+        title: "Payment Failed",
+        variant: "destructive"
+      });
     }
-  }, []);
+  }, [isPaymentFailed]);
   useEffect(() => {
     if (profileData?.city) {
       const { phone, streetAddress, postalCode, city, country } = profileData;
@@ -89,7 +88,7 @@ const page = () => {
       </section>
     );
   }
-  console.log(subtotal);
+  
 
   return (
     <>
@@ -138,7 +137,7 @@ const page = () => {
             <h2 className="text-xl font-bold mb-4 ">Checkout</h2>
             <form onSubmit={proceedToCheckout}>
               <div className="  w-96">
-                <Addressinput
+                <AddressInputMemoized
                   addressProps={address}
                   setadressProps={handleAddressChange}
                 />

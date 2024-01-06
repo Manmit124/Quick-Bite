@@ -5,15 +5,6 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import MenuItemPriceProps from "./MenuItemPriceProps";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 
 const Menuitemform = ({ onSubmit, menuItem, setImageUrl }) => {
   const [image, setimage] = useState(menuItem?.image || "");
@@ -34,7 +25,7 @@ const Menuitemform = ({ onSubmit, menuItem, setImageUrl }) => {
       });
     });
   }, []);
-console.log(category);
+
   return (
     <div>
       <form
@@ -72,28 +63,14 @@ console.log(category);
               value={description}
               onChange={(e) => setdescription(e.target.value)}
             />
-            <Label className="mb-2">Category</Label>
-            {/* <Select >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={category || "Select Category"}/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>select category</SelectLabel>
-                  {categories?.length > 0 &&
-                    categories.map((c) => (
-                      <>
-                        <SelectItem key={c._id}  onClick={(e)=>setcategory(c._id)} className="cursor-pointer" value={c._id}>
-                          {c.name}
-                        </SelectItem>
-                      </>
-                    ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select> */}
-            <select value={category} onChange={ev => setcategory(ev.target.value)}>
+            <div className="flex flex-col gap-2 my-2 ">
+
+         
+            <Label className=" max-w-sm">Category</Label>
+          
+            <select className=" border  p-2 rounded-md bg-black" value={category} onChange={ev => setcategory(ev.target.value)}>
             {categories?.length > 0 && categories.map(c => (
-              <option key={c._id} value={c._id}>{c.name}</option>
+              <option className=" p-2 hover:bg-white hover:text-black  " key={c._id} value={c._id}>{c.name}</option>
             ))}
           </select>
             <Label>Base Price</Label>
@@ -102,6 +79,7 @@ console.log(category);
               value={basePrice}
               onChange={(e) => setbasePrice(e.target.value)}
             />
+               </div>
             <MenuItemPriceProps
               name={"Sizes"}
               addLabel={"Add item Size"}

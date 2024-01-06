@@ -1,11 +1,10 @@
 "use client";
-import { Button, buttonVariants } from "@/app/component/ui/button";
-import { Input } from "@/app/component/ui/input";
-import { Label } from "@/app/component/ui/label";
-import { toast } from "@/app/component/ui/use-toast";
+import MenuItemcard from "@/app/component/layout/MenuItemcard";
+import {  buttonVariants } from "@/app/component/ui/button";
+import { Skeleton } from "@/app/component/ui/skeleton";
+
 import userprofile from "@/app/hook/userprofile";
 import { cn } from "@/app/utils/app";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -25,7 +24,7 @@ const page = () => {
   }, []);
 
   if (loading) {
-    return <h1>"Loading....."</h1>;
+    return <Skeleton className="w-[100px] h-[20px] rounded-full"/>
   }
   if (!data.admin) {
     return <h1>"admin nh hai....."</h1>;
@@ -35,7 +34,7 @@ const page = () => {
     <div>
       <div className="mt-5 ">
         <div className="py-5 mx-auto text-center flex flex-col items-center ">
-          <h1 className="text-3xl font-bold  text-gray-900 sm:text-6xl">
+          <h1 className="text-3xl  font-bold   sm:text-6xl">
             Menu-Items
           </h1>
           <div className="mt-8 ">
@@ -46,20 +45,10 @@ const page = () => {
               Create new menu items
             </Link>
           </div>
-          <div className="mt-8 grid gap-4 grid-cols-4  flex-col ">
+          <div className="mt-8 grid gap-4   grid-cols-2 lg:grid-cols-4  flex-col ">
             {menuItems?.length > 0 &&
               menuItems.map((item) => (
-      
-                  <div key={item._id} className="max-w-xl mx-auto pl-10 pr-10  bg-slate-500 rounded-lg">
-                    <Link href={'/menu-items/edit/'+item._id} className="w-full  text-white py-2 px-4 rounded focus:outline-none  transition duration-300 ">
-                    <div className="relative w-24 h-24">
-                    <Image src={item.image} alt="imag of menu-items" height={100} width={100}/>
-
-                    </div>
-                      {item.name}
-                    </Link>
-                  </div>
-              
+                <MenuItemcard key={item._id} id={item._id} name={item.name} image={item.image} />
               ))}
           </div>
         </div>
@@ -69,3 +58,6 @@ const page = () => {
 };
 
 export default page;
+
+
+

@@ -25,6 +25,20 @@ import Link from "next/link";
 import ImageUploader from "@/app/lib/Imageupload";
 import { Checkbox } from "@/app/component/ui/checkbox";
 import userprofile from "@/app/hook/userprofile";
+const fetchUserProfile = async (setters) => {
+  try {
+    const response = await fetch("/api/profile");
+    if (response.ok) {
+      const data = await response.json();
+      setters.forEach(({ state, setter, key }) => setter(data[key] || state));
+    } else {
+      console.error('Error fetching updated profile data:', response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error('Error fetching updated profile data:', error);
+  }
+};
+
 
 export default function page() {
   const [image, setimage] = useState(undefined);
@@ -50,33 +64,128 @@ export default function page() {
     setformData((prevFormData) => ({ ...prevFormData, profilePicture: url }));
   };
 
+  //  useEffect(() => {
+  //    if (status === "authenticated") {
+  //      setusername(session.data.user.name);
+  //      fetch("/api/profile").then((response) => {
+  //       response.json().then((data) => {
+  //          console.log(data);
+  //         setphone(data.phone);
+  //         setstreetAddress(data.streetAddress);
+  //          setpostalCode(data.postalCode);
+  //        setcity(data.city);
+  //          setcountry(data.country);
+  //        setisAdmin(data.admin);
+  //      });
+  //      });
+  //    }
+  //  }, [session, status]);
+ 
+  // const fetchUserProfile = async () => {
+  //   try {
+  //     const response = await fetch("/api/profile");
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setphone(data.phone);
+  //       setstreetAddress(data.streetAddress);
+  //       setpostalCode(data.postalCode);
+  //       setcity(data.city);
+  //       setcountry(data.country);
+  //       setisAdmin(data.admin);
+  //     } else {
+  //       console.error('Error fetching updated profile data:', response.status, response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching updated profile data:', error);
+  //   }
+  // };
+  
   useEffect(() => {
     if (status === "authenticated") {
       setusername(session.data.user.name);
-      fetch("/api/profile").then((response) => {
-        response.json().then((data) => {
-          console.log(data);
-          setphone(data.phone);
-          setstreetAddress(data.streetAddress);
-          setpostalCode(data.postalCode);
-          setcity(data.city);
-          setcountry(data.country);
-          setisAdmin(data.admin);
-        });
-      });
+      fetchUserProfile([
+        { state: phone, setter: setphone, key: "phone" },
+        { state: streetAddress, setter: setstreetAddress, key: "streetAddress" },
+        { state: postalCode, setter: setpostalCode, key: "postalCode" },
+        { state: city, setter: setcity, key: "city" },
+        { state: country, setter: setcountry, key: "country" },
+        { state: isAdmin, setter: setisAdmin, key: "admin" },
+      ]);
     }
   }, [session, status]);
-  // function of handling
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     setusername(session.data.user.name);
+      
+  //     fetchUserProfile(); // Initial fetch
+  
+  //     // Set up interval for subsequent fetches every 5 seconds
+  //     const intervalId = setInterval(fetchUserProfile, 5000);
+  
+  //     // Cleanup the interval when the component unmounts or when dependencies change
+  //     return () => clearInterval(intervalId);
+  //   }
+  // }, [session, status]);
+  
+  //  useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/api/profile");
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         console.log(data);
+  //         setisAdmin(data.admin);
+  //       } else {
+  //         console.error('Error fetching updated profile data:', response.status, response.statusText);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching updated profile data:', error);
+  //     }
+  //   };
 
+  //   if (status === "authenticated") {
+  //     fetchData(); // Initial fetch
+
+  //     // Set up interval for subsequent fetches every 5 seconds
+  //     const intervalId = setInterval(fetchData, 5000);
+
+  //     // Cleanup the interval when the component unmounts or when dependencies change
+     
+  //   }
+  // }, );
+
+
+  // const hadleaddrresschange = (propName, value) => {
+  //   if (propName === "phone") setphone(value);
+  //   console.log(phone);
+  //   if (propName === "streetAddress") setstreetAddress(value);
+  //   console.log(streetAddress);
+  //   if (propName === "postalCode") setpostalCode(value);
+
+  //   if (propName === "city") setcity(value);
+  //   if (propName === "country") setcountry(value);
+  // };
+  
   const hadleaddrresschange = (propName, value) => {
-    if (propName === "phone") setphone(value);
-    console.log(phone);
-    if (propName === "streetAddress") setstreetAddress(value);
-    console.log(streetAddress);
-    if (propName === "postalCode") setpostalCode(value);
-
-    if (propName === "city") setcity(value);
-    if (propName === "country") setcountry(value);
+    switch (propName) {
+      case "phone":
+        setphone(value);
+        break;
+      case "streetAddress":
+        setstreetAddress(value);
+        break;
+      case "postalCode":
+        setpostalCode(value);
+        break;
+      case "city":
+        setcity(value);
+        break;
+      case "country":
+        setcountry(value);
+        break;
+      default:
+        break;
+    }
   };
   const handleProfilesubmit = async (e) => {
     e.preventDefault();
@@ -95,6 +204,10 @@ export default function page() {
       }),
     });
     if (response.ok) {
+      setformData((prevFormData) => ({
+        ...prevFormData,
+        profilePicture: formData.profilePicture,
+      }));
       return toast({
         title: "Your profile has been updated",
         variant: "outline",
@@ -106,6 +219,8 @@ export default function page() {
       });
     }
   };
+
+  
 
   // image upload functionallity
 
@@ -128,8 +243,8 @@ export default function page() {
 
   return (
     <>
-    <div className="no-scrollbar  mt-0">
-      <div className="mt-8 ">
+    <div className="no-scrollbar  mt-0 ">
+      <div className="lg:mt-8 ">
         <div className="py-5 mx-auto text-center flex flex-col items-center font-medium ">
           <h1 className="text-3xl font-bold sm:text-6xl">
             Profile
@@ -137,14 +252,17 @@ export default function page() {
         </div>
 
         <form className=" max-w-xl mx-auto  " onSubmit={handleProfilesubmit}>
-          <div className="flex gap-2 ">
+          <div className="flex flex-col  lg:flex-row gap-2 ">
+          <div className=" flex justify-center items-center lg:justify-start  lg:items-start ">
+
             <ImageUploader
               image={image}
               setImageUrl={setImageUrl}
               setimage={setimage}
             />
-            <div className="grow">
-              <div className="mb-4">
+          </div>
+            <div className="grow p-3">
+              <div className="mb-4 ">
                 <Label className="block mb-1  leading-normal text-muted-foreground  sm:leading-7">
                   First and Last Name
                 </Label>
@@ -191,7 +309,7 @@ export default function page() {
                   )}
             </div>
           </div>
-          <CardFooter className="justify-between flex mt-8">
+          <CardFooter className="justify-between flex lg:mt-8">
             <Link href={"/"}>
               <Button>Cancel</Button>
             </Link>

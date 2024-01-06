@@ -11,7 +11,7 @@ const HomeMenu = () => {
       });
     });
   }, []);
-  console.log(bestsellers);
+ 
   return (
     <section className="container  mx-auto my-10">
       <h1 className=" bg-gradient-to-br from-black to-neutral-600 bg-clip-text text-center text-4xl font-bold  text-transparent dark:bg-gradient-to-r dark:from-white dark:to-neutral-800 sm:text-left sm:text-5xl md:max-w-2xl top-4 left-5  mt-0 py-3">

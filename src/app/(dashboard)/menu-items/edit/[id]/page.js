@@ -1,13 +1,10 @@
 "use client";
 import Menuitemform from "@/app/component/layout/Menuitemform";
-import { Button } from "@/app/component/ui/button";
-import { Input } from "@/app/component/ui/input";
-import { Label } from "@/app/component/ui/label";
+
 import { toast } from "@/app/component/ui/use-toast";
 import userprofile from "@/app/hook/userprofile";
 import DeleteButton from "@/app/lib/DeleteButton";
-import ImageUploader from "@/app/lib/Imageupload";
-import Link from "next/link";
+
 import { redirect, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast as hottoast } from "react-hot-toast";
@@ -19,15 +16,30 @@ const NewMenuItems = () => {
 
   const [formData, setformData] = useState({});
   const [redirecttoItem, setredirecttoItem] = useState(false);
-  useEffect(() => {
-    fetch("/api/menu-items").then((res) => {
-      res.json().then((items) => {
-        const item = items.find((i) => i._id === id);
+  // useEffect(() => {
+  //   fetch("/api/menu-items").then((res) => {
+  //     res.json().then((items) => {
+  //       const item = items.find((i) => i._id === id);
 
+  //       setmenuItem(item);
+  //     });
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const res = await fetch("/api/menu-items");
+        const items = await res.json();
+        const item = items.find((i) => i._id === id);
         setmenuItem(item);
-      });
-    });
-  }, []);
+      } catch (error) {
+        console.error("Error fetching menu items", error);
+      }
+    };
+
+    fetchMenuItems();
+  }, [id]);
 
   const handleFormSubmit = async (e, data) => {
     e.preventDefault();
@@ -90,9 +102,7 @@ const NewMenuItems = () => {
     <div>
       <div className="mt-5 ">
         <div className="py-5 mx-auto text-center flex flex-col items-center ">
-          <h1 className="text-3xl font-bold  text-gray-900 sm:text-6xl">
-            Menu-Items
-          </h1>
+          <h1 className="text-3xl font-bold   sm:text-6xl">Menu-Items</h1>
         </div>
         <div className="max-w-xl mx-auto ">
           <Menuitemform

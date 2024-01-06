@@ -1,7 +1,7 @@
 import { User } from "@/app/models/User";
-import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
 import { connectToDB } from "@/app/utils/connectto";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   
@@ -17,7 +17,7 @@ export async function POST(req) {
       password: hashedPassword,
     });
 
-    return Response.json(createUser);
+    return NextResponse.json(createUser);
   } catch (error) {
     return Response.json({ error: "Error creating user" }, { status: 500 });
   } 

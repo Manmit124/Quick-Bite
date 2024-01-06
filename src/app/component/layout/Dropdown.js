@@ -48,9 +48,15 @@ const Dropdown = () => {
           </div>
         </div>
         <DropdownMenuSeparator className=" mb-2"/>
-        <DropdownMenuItem >
-          <Link href={"/profile"}>Profile</Link>
+          <Link href={"/profile"} className=" cursor-pointer">
+        <DropdownMenuItem className="cursor-pointer" >
+          <span>
+          Profile
+
+          </span>
+          
         </DropdownMenuItem>
+          </Link>
         <DropdownMenuSeparator className=" mb-2"/>
         <DropdownMenuItem
         

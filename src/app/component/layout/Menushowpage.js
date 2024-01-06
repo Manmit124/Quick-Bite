@@ -6,12 +6,14 @@ const Menushowpage = () => {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   useEffect(() => {
-    fetch('/api/categories').then(res => {
-      res.json().then(categories => setCategories(categories))
-    });
-    fetch('/api/menu-items').then(res => {
-      res.json().then(menuItems => setMenuItems(menuItems));
-    });
+    const fetchData = async (url, setData) => {
+      const response = await fetch(url);
+      const data = await response.json();
+      setData(data);
+    };
+
+    fetchData('/api/categories', setCategories);
+    fetchData('/api/menu-items', setMenuItems);
   }, []);
   return (
     <section className="mt-8">

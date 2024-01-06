@@ -2,8 +2,6 @@
 import { useSession } from "next-auth/react";
 import { redirect, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
-
 import Link from "next/link";
 import ImageUploader from "@/app/lib/Imageupload";
 import { Label } from "@/app/component/ui/label";
@@ -12,14 +10,11 @@ import Addressinput from "@/app/component/layout/Addressinput";
 import { Button } from "@/app/component/ui/button";
 import { CardFooter } from "@/app/component/ui/card";
 import { useToast } from "@/app/component/ui/use-toast";
-import { Checkbox } from "@/app/component/ui/checkbox";
 import userprofile from "@/app/hook/userprofile";
 
 export default function page() {
   const [image, setimage] = useState(undefined);
-  const [imagepercentage, setimagepercentage] = useState(0);
   const [formData, setformData] = useState({});
-  console.log(imagepercentage);
   const [phone, setphone] = useState("");
   const [streetAddress, setstreetAddress] = useState("");
   const [postalCode, setpostalCode] = useState("");
@@ -45,7 +40,7 @@ export default function page() {
       fetch("/api/users").then((response) => {
         response.json().then((dato) => {
         const data=dato.find(e=>e._id===id)
-          console.log(data);
+       
           setphone(data.phone);
           setstreetAddress(data.streetAddress);
           setpostalCode(data.postalCode);
@@ -59,15 +54,36 @@ export default function page() {
   }, [session, status]);
   // function of handling
 
-  const hadleaddrresschange = (propName, value) => {
-    if (propName === "phone") setphone(value);
-    console.log(phone);
-    if (propName === "streetAddress") setstreetAddress(value);
-    console.log(streetAddress);
-    if (propName === "postalCode") setpostalCode(value);
+  // const  = (propName, value) => {
+  //   if (propName === "phone") setphone(value);
+  //   console.log(phone);
+  //   if (propName === "streetAddress") setstreetAddress(value);
+  //   console.log(streetAddress);
+  //   if (propName === "postalCode") setpostalCode(value);
 
-    if (propName === "city") setcity(value);
-    if (propName === "country") setcountry(value);
+  //   if (propName === "city") setcity(value);
+  //   if (propName === "country") setcountry(value);
+  // };
+  const hadleaddrresschange = (propName, value) => {
+    switch (propName) {
+      case "phone":
+        setphone(value);
+        break;
+      case "streetAddress":
+        setstreetAddress(value);
+        break;
+      case "postalCode":
+        setpostalCode(value);
+        break;
+      case "city":
+        setcity(value);
+        break;
+      case "country":
+        setcountry(value);
+        break;
+      default:
+        break;
+    }
   };
   const handleProfilesubmit = async (e) => {
     e.preventDefault();
@@ -99,17 +115,7 @@ export default function page() {
     }
   };
 
-  // image upload functionallity
 
-  // status
-
-  // useEffect(()=>{
-  // if(status==="loading"){
-  // }
-  // if(status==="unauthenticated"){
-  //   return redirect("/login");
-  // }
-  // },[status])
 
   if (status === "loading") {
     return <h1>"Loading....."</h1>;

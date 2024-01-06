@@ -1,87 +1,40 @@
-"use client";
-import React, { useContext, useState } from "react";
+// MenuItemPopup.js
+import React from "react";
+import Image from "next/image";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 
 
-
-import { CartContext } from "../Authprovider";
-
-import Cardo from "./Card";
-
-import MenuItemPopup from "./MenuItemPopup";
-
-const MenuItem = (menuItem) => {
-  // console.log(image)
-  const {
-    image,
-    name,
-    description,
-    category,
-    basePrice,
-    sizes,
-    extraIngredients,
-  } = menuItem;
-  const { addToCart } = useContext(CartContext);
-  const [showPopup, setshowPopup] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(sizes?.[0] || null);
-  const [selectedExtras, setSelectedExtras] = useState([]);
-
-  function handleAddToCartButtonClick() {
-    const hasOptions = sizes.length > 0 || extraIngredients.length > 0;
-    if (hasOptions && !showPopup) {
-      setshowPopup(true);
-      return;
-    }
-    addToCart(menuItem, selectedSize, selectedExtras);
-    // await new Promise(resolve=>setTimeout(resolve,1000))
-    setshowPopup(false);
-  }
-  function handleExtraThingClick(ev, extraThing) {
-    const checked = ev.target.checked;
-    if (checked) {
-      setSelectedExtras((prev) => [...prev, extraThing]);
-    } else {
-      setSelectedExtras((prev) => {
-        return prev.filter((e) => e.name !== extraThing.name);
-      });
-    }
-  }
-
+const MenuItemPopup = ({
+  image,
+  name,
+  description,
+  sizes,
+  extraIngredients,
+  basePrice,
+  selectedSize,
+  setSelectedSize,
+  selectedExtras,
+  handleExtraThingClick,
+  handleAddToCartButtonClick,
+  setShowPopup,
+}) => {
+  
   let selectedPrice = Number(basePrice);
+
   if (selectedSize) {
     selectedPrice += selectedSize.price;
   }
+
   if (selectedExtras?.length > 0) {
     for (const extra of selectedExtras) {
       selectedPrice += extra.price;
     }
   }
-  return (
-    <>
-      {showPopup && (
-        <MenuItemPopup
-          image={image}
-          name={name}
-          description={description}
-          sizes={sizes}
-          extraIngredients={extraIngredients}
-          basePrice={basePrice}
-          selectedSize={selectedSize}
-          setSelectedSize={setSelectedSize}
-          handleExtraThingClick={handleExtraThingClick}
-          selectedExtras={selectedExtras}
-          handleAddToCartButtonClick={handleAddToCartButtonClick}
-          setShowPopup={setshowPopup}
-        />
-      )}
-      <Cardo onAddToCart={handleAddToCartButtonClick} {...menuItem} />
-    </>
-  );
-};
 
-export default MenuItem;
-{
-  /* <div
-          onClick={() => setshowPopup(false)}
+  return (
+    <div
+          onClick={() => setShowPopup(false)}
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 border"
         >
           <div
@@ -148,7 +101,7 @@ export default MenuItem;
               <div className="flex justify-between">
                 <Button
                   variant="destructive"
-                  onClick={() => setshowPopup(false)}
+                  onClick={() => setShowPopup(false)}
                 >
                   Cancel
                 </Button>
@@ -159,5 +112,8 @@ export default MenuItem;
               </div>
             </div>
           </div>
-        </div> */
-}
+        </div> 
+  );
+};
+
+export default MenuItemPopup;

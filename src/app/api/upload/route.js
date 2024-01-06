@@ -1,10 +1,7 @@
-export async function POST(req){
-    const data=await req.formData();
+export async function POST(req) {
+  const data = await req.formData();
 
- console.log(req)
+  console.log(req);
 
-
-    return Response.json(true)
-
-
+  return Response.json(true);
 }

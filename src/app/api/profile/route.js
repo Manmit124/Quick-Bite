@@ -2,6 +2,7 @@ import { connectToDB } from "@/app/utils/connectto";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { User } from "@/app/models/User";
+import { NextResponse } from "next/server";
 
 export async function PUT(req) {
   connectToDB();
@@ -21,21 +22,27 @@ export async function PUT(req) {
 }
 
 export async function GET(req) {
-  connectToDB();
-  const url = new URL(req.url);
-  const _id = url.searchParams.get("_id");
-  let filterUser = {};
-  if (_id) {
-    filterUser = { _id };
-  } else {
-    const session = await getServerSession(authOptions);
-    const email = session?.user?.email;
-    if (!email) {
-      return Response.json({});
+  try {
+    
+    connectToDB();
+    const url = new URL(req.url);
+    const _id = url.searchParams.get("_id");
+    let filterUser = {};
+    if (_id) {
+      filterUser = { _id };
+    } else {
+      const session = await getServerSession(authOptions);
+      const email = session?.user?.email;
+      if (!email) {
+        return NextResponse.json({});
+      }
+      filterUser = { email };
     }
-    filterUser = { email };
+    const user = await User.findOne(filterUser).lean();
+  
+    return NextResponse.json(user);
+  } catch (error) {
+    console.error('Error fetching user', error);
+    return NextResponse.json({ error: 'Failed to fetch user' });
   }
-  const user = await User.findOne(filterUser).lean();
-
-  return Response.json(user);
 }

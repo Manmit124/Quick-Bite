@@ -16,12 +16,13 @@ const NewNavbar = () => {
   const session = useSession();
   const status = session?.status;
   const { cartProducts } = useContext(CartContext);
+  const searchRef = useRef(null);
+  const [isMenuActive, setActive] = useState(false);
   let position = true;
   const navbarStyle = {
     opacity: 1,
     transform: "none",
   };
-  const [isMenuActive, setActive] = useState(false);
 
   const navLinks = [
     {
@@ -41,18 +42,8 @@ const NewNavbar = () => {
     //   path: "/about",
     // },
   ];
-  function toggleActive() {
-    if (window.innerWidth < 768) {
-      if (isMenuActive) {
-        setActive(false);
-      } else {
-        setActive(true);
-      }
-    }
-  }
-
-  const searchRef = useRef(null);
-
+  
+  
   const handleClickOutside = (event) => {
     // Check if the click was inside the search component or its children
     if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -74,7 +65,16 @@ const NewNavbar = () => {
   useEffect(() => {
     document.body.className = isMenuActive ? "overflow-hidden" : "";
   }, [isMenuActive]);
-
+  
+  function toggleActive() {
+    if (window.innerWidth < 768) {
+      if (isMenuActive) {
+        setActive(false);
+      } else {
+        setActive(true);
+      }
+    }
+  }
   return (
     <>
       <MobNav isMenuActive={isMenuActive} toggleActive={toggleActive} />
@@ -102,7 +102,9 @@ const NewNavbar = () => {
                     : ""
                 } hover:bg-zinc-200`}
               >
-                {navLink.title}
+              <span>
+              {navLink.title}
+              </span> 
               </Link>
             ))}
           </div>
