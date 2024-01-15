@@ -3,16 +3,17 @@ import { CartContext, cartProductprice } from "@/app/component/Authprovider";
 import Addressinput from "@/app/component/layout/Addressinput";
 import CartProduct from "@/app/component/layout/CartProduct";
 import { toast } from "@/app/component/ui/use-toast";
-import userprofile from "@/app/hook/userprofile";
+import Userprofile from "@/app/hook/userprofile";
 import React, { useContext, useEffect, useState } from "react";
 import { toast as hottoast } from "react-hot-toast";
 const AddressInputMemoized = React.memo(Addressinput);
-const page = () => {
+const Page = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [address, setAddress] = useState({});
-  const { data: profileData } = userprofile();
+  const { data: profileData } = Userprofile();
 
-  const isPaymentFailed = window.location.href.includes("canceled=1");
+  const isPaymentFailed = (typeof window !== 'undefined') && window.location.href.includes("canceled=1");
+
   useEffect(() => {
     if (isPaymentFailed) {
       hottoast.error('Payment Failed');
@@ -156,4 +157,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -9,7 +9,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { cn } from "../../utils/app";
 
-const page = () => {
+const Page = () => {
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   const [creatingUser, setcreatingUser] = useState(false);
@@ -68,7 +68,7 @@ const page = () => {
           )}
         </div>
         <div className="grid gap-6">
-          <form onSubmit={handleSubmit}>
+  {/* <form onSubmit={handleSubmit}>
             <div className="grid gap-2">
               <div className="grid gap-1">
                 <Label htmlFor="email" className="mt-2  mb-2">
@@ -99,7 +99,7 @@ const page = () => {
                 Register
               </Button>
             </div>
-          </form>
+          </form> */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -127,4 +127,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

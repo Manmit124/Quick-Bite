@@ -2,7 +2,8 @@
 import Menuitemform from "@/app/component/layout/Menuitemform";
 
 import { toast } from "@/app/component/ui/use-toast";
-import userprofile from "@/app/hook/userprofile";
+import Userprofile from "@/app/hook/userprofile";
+
 import DeleteButton from "@/app/lib/DeleteButton";
 
 import { redirect, useParams } from "next/navigation";
@@ -12,7 +13,7 @@ const NewMenuItems = () => {
   const { id } = useParams();
   const [menuItem, setmenuItem] = useState(null);
 
-  const { loading, data } = userprofile();
+  const { loading, data } = Userprofile();
 
   const [formData, setformData] = useState({});
   const [redirecttoItem, setredirecttoItem] = useState(false);

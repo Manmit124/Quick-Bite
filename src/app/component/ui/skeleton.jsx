@@ -1,6 +1,6 @@
 import { cn } from "@/app/utils/app";
 
-git
+
 function Skeleton({
   className,
   ...props

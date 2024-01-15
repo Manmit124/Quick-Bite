@@ -46,7 +46,7 @@ const MenuItemPriceProps = ({ name, addLabel, props, setprops }) => {
         <PopoverContent className="w-80">
           {props.length > 0 &&
             props.map((Props, index) => (
-              <div className="grid gap-4 scroll-m-0">
+              <div key={index} className="grid gap-4 scroll-m-0">
                 <div className="space-y-2">
                   <h4 className="font-medium leading-none">{name}</h4>
                 </div>

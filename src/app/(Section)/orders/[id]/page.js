@@ -28,7 +28,6 @@ export default function OrderPage() {
         });
       })
     }
-    console.log(order)
   }, []);
 
   let subtotal = 0;

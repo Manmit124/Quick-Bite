@@ -10,9 +10,9 @@ import Addressinput from "@/app/component/layout/Addressinput";
 import { Button } from "@/app/component/ui/button";
 import { CardFooter } from "@/app/component/ui/card";
 import { useToast } from "@/app/component/ui/use-toast";
-import userprofile from "@/app/hook/userprofile";
+import Userprofile from "@/app/hook/userprofile";
 
-export default function page() {
+export default function Page() {
   const [image, setimage] = useState(undefined);
   const [formData, setformData] = useState({});
   const [phone, setphone] = useState("");
@@ -21,7 +21,7 @@ export default function page() {
   const [city, setcity] = useState("");
   const [country, setcountry] = useState("");
   const [isAdmin, setisAdmin] = useState(false);
-  const {data:loggedInUserData} = userprofile();
+  const {data:loggedInUserData} = Userprofile();
   const session = useSession();
   const { status } = session;
   const [username, setusername] = useState("");
@@ -118,7 +118,7 @@ export default function page() {
 
 
   if (status === "loading") {
-    return <h1>"Loading....."</h1>;
+    return <h1>&ldquo;Loading.....&rdquo;</h1>;
   }
   if (status === "unauthenticated") {
     return redirect("/login");

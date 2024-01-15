@@ -24,7 +24,8 @@ import { app } from "../../config/firebase";
 import Link from "next/link";
 import ImageUploader from "@/app/lib/Imageupload";
 import { Checkbox } from "@/app/component/ui/checkbox";
-import userprofile from "@/app/hook/userprofile";
+import Userprofile from "@/app/hook/userprofile";
+
 const fetchUserProfile = async (setters) => {
   try {
     const response = await fetch("/api/profile");
@@ -40,7 +41,7 @@ const fetchUserProfile = async (setters) => {
 };
 
 
-export default function page() {
+export default function Page() {
   const [image, setimage] = useState(undefined);
   const [imagepercentage, setimagepercentage] = useState(0);
   const [formData, setformData] = useState({});
@@ -51,7 +52,7 @@ export default function page() {
   const [city, setcity] = useState("");
   const [country, setcountry] = useState("");
   const [isAdmin, setisAdmin] = useState(false);
-  const {data:loggedInUserData} = userprofile();
+  const {data:loggedInUserData} = Userprofile();
 
   const session = useSession();
   const { status } = session;
@@ -235,7 +236,7 @@ export default function page() {
   // },[status])
 
   if (status === "loading") {
-    return <h1>"Loading....."</h1>;
+    return <h1>&ldquo;Loading.....&rdquo;</h1>;
   }
   if (status === "unauthenticated") {
     return redirect("/login");

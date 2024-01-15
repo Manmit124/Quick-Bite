@@ -1,11 +1,12 @@
 "use client";
 import Menuitemform from "@/app/component/layout/Menuitemform";
 import { toast } from "@/app/component/ui/use-toast";
-import userprofile from "@/app/hook/userprofile";
+import Userprofile from "@/app/hook/userprofile";
+
 import { redirect } from "next/navigation";
 import React, { useState } from "react";
 const NewMenuItems = () => {
-  const { loading, data } = userprofile();
+  const { loading, data } = Userprofile();
  
   const [formData, setformData] = useState({});
   const [redirecttoItem, setredirecttoItem] = useState(false);
@@ -45,10 +46,10 @@ const NewMenuItems = () => {
   };
 
   if (loading) {
-    return <h1>"Loading....."</h1>;
+    return <h1>&ldquo;Loading.....&rdquo;</h1>;
   }
   if (!data.admin) {
-    return <h1>"admin nh hai bhai....."</h1>;
+    return <h1>&ldquo;admin nh hai bhai.....&rdquo;</h1>;
   }
   return (
     <div>

@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental:{
-    serverActions:true,
-  },
-    reactStrictMode: true,
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
@@ -18,11 +15,10 @@ const nextConfig = {
         port: "",
         pathname: "**",
       },
-
     ],
   },
-}
-const withVideos = require('next-videos')
+};
+const withVideos = require("next-videos");
 
 // module.exports = withVideos()
 

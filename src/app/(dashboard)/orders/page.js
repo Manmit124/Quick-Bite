@@ -1,17 +1,16 @@
 "use client";
 import OrderItem from "@/app/component/layout/OrderItem";
-import userprofile from "@/app/hook/userprofile";
+import Userprofile from "@/app/hook/userprofile";
 
 import React, { useEffect, useState } from "react";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
-  const { loading, data: profile } = userprofile();
+  const { loading, data: profile } = Userprofile();
 
   useEffect(() => {
     fetchOrders();
-    console.log(orders.paid)
   }, []);
 
   const fetchOrders = async () => {

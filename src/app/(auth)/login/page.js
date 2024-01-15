@@ -9,7 +9,7 @@ import Link from "next/link";
 import { cn } from "../../utils/app";
 // import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
   const [creatingUser, setcreatingUser] = useState(false);
@@ -125,7 +125,7 @@ const page = () => {
                 className="hover:text-brand underline underline-offset-4"
               >
             <p className="px-8 text-center text-sm text-muted-foreground">
-                Dont't have an account? Register
+                Do not have an account? Register
             </p>
               </Link>
           </div>
@@ -135,4 +135,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

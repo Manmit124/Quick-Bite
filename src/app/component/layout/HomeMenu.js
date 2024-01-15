@@ -19,7 +19,13 @@ const HomeMenu = () => {
       </h1>
       <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5 mt-10">
         {bestsellers?.length > 0 &&
-          bestsellers.map((item) => <MenuItem {...item} />)}
+          bestsellers.map((item,index) => 
+          <div key={index}>
+
+          <MenuItem  {...item}  />
+          </div>
+          
+          )}
       </div>
     </section>
   );

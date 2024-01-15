@@ -2,14 +2,14 @@
 import MenuItemcard from "@/app/component/layout/MenuItemcard";
 import {  buttonVariants } from "@/app/component/ui/button";
 import { Skeleton } from "@/app/component/ui/skeleton";
+import Userprofile from "@/app/hook/userprofile";
 
-import userprofile from "@/app/hook/userprofile";
 import { cn } from "@/app/utils/app";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const page = () => {
-  const { loading, data } = userprofile();
+const Page = () => {
+  const { loading, data } = Userprofile();
   const [menuItems, setmenuItems] = useState([]);
 
   function fetchMenuItems() {
@@ -27,7 +27,7 @@ const page = () => {
     return <Skeleton className="w-[100px] h-[20px] rounded-full"/>
   }
   if (!data.admin) {
-    return <h1>"admin nh hai....."</h1>;
+    return <h1>&lqduo;admin nh hai.....&rdquo;</h1>;
   }
 
   return (
@@ -57,7 +57,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
 
 
 

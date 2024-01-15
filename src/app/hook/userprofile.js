@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-export default function userprofile() {
+export default function Userprofile() {
   const [data, setData] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {

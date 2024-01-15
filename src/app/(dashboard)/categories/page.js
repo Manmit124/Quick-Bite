@@ -4,18 +4,17 @@ import { Input } from "@/app/component/ui/input";
 import { Label } from "@/app/component/ui/label";
 import { toast } from "@/app/component/ui/use-toast";
 import { toast as hottoast } from "react-hot-toast";
-import userprofile from "@/app/hook/userprofile";
-
 import { useEffect, useState } from "react";
 import DeleteButton from "@/app/lib/DeleteButton";
 import CategoryItem from "@/app/component/layout/CategoryItem";
+import Userprofile from "@/app/hook/userprofile";
 
-const page = () => {
+const Page = () => {
   const [newcategoryname, setnewcategoryname] = useState("");
   const [Categories, setCategories] = useState();
   const [editCategory, seteditCategory] = useState(null);
 
-  const { loading: ProfileLoading, data: profileData } = userprofile();
+  const { loading: ProfileLoading, data: profileData } = Userprofile();
 
   useEffect(() => {
     async function fetchData() {
@@ -83,7 +82,7 @@ const page = () => {
   }
 
   if (ProfileLoading) {
-    return <h1>"Loading....."</h1>;
+    return <h1>&ldquo;Loading.....&rdquo;</h1>;
   }
 
   return (
@@ -144,4 +143,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

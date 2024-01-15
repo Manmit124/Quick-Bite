@@ -22,4 +22,6 @@ const UserItem = React.memo(({ user, onDeleteClick }) => (
   </div>
 ));
 
+UserItem.displayName='UserItem'
+
 export default UserItem;

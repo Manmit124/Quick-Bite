@@ -55,5 +55,5 @@ const Cardo = React.memo(({ onAddToCart, ...item }) => {
     </div>
   );
 });
-
+Cardo.displayName='Cardo';
 export default Cardo;
