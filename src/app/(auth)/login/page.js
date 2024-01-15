@@ -67,7 +67,7 @@ const Page = () => {
               )}
             </div>
             <div className="grid gap-6">
-              <form onSubmit={handleSubmit}>
+              {/* <form onSubmit={handleSubmit}>
                 <div className="grid gap-2">
                   <div className="grid gap-1">
                     <Label htmlFor="email" className="mt-2  mb-2">
@@ -102,16 +102,16 @@ const Page = () => {
                     login
                   </Button>
                 </div>
-              </form>
+              </form> */}
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
                 </div>
-                <div className="relative flex justify-center text-xs uppercase">
+                {/* <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
                     Or continue with
                   </span>
-                </div>
+                </div> */}
               </div>
               <Button
                 onClick={() => signIn("google", { callbackUrl: "/" })}
