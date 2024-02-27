@@ -18,9 +18,9 @@ const nextConfig = {
     ],
   },
 };
-const withVideos = require("next-videos");
+
 
 // module.exports = withVideos()
 
-module.exports = withVideos(nextConfig);
+// module.exports = withVideos(nextConfig);
 // module.exports = nextConfig,withVideos

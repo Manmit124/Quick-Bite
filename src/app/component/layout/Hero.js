@@ -37,12 +37,18 @@ const Hero = () => {
 
           <div>
             <video
-              src={require("../../../../public/cube.mp4")}
+              // src={require("../../../../public/cube.mp4")}
               autoPlay
               loop
               muted
               className="hidden aspect-square bg-transparent md:block"
-            />
+            >
+
+              <source
+               src={"/cube.mp4"}
+               type="video/mp4"
+               />
+            </video>
           </div>
         </div>
       </div>
